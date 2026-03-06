@@ -1,0 +1,5 @@
+client/node_modules/
+server/venv/
+server/__pycache__/
+server/db.sqlite3
+.DS_Store
