@@ -5,6 +5,7 @@ import PostDetailPage from './pages/PostDetailPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import CreatePostPage from './pages/CreatePostPage';
+import MyPostsPage from './pages/MyPostsPage';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/create-post" element={<CreatePostPage />} />
-          <Route path="/my-posts" element={<h2>This will become the user dashboard soon...</h2>} />
+          <Route path="/my-posts" element={<MyPostsPage />} />
         </Routes>
       {/* </div> */}
     </Router>
