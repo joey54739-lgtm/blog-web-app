@@ -131,7 +131,9 @@ function MyPostsPage() {
                 </div>
                 
                 <div className="flex-shrink-0 d-flex gap-2">
-                  <button className="btn btn-edit btn-sm rounded-pill px-3 fw-medium">Edit</button>
+                  <Link to={`/edit-post/${post.id}`} className="btn btn-edit btn-sm rounded-pill px-3 fw-medium text-decoration-none d-flex align-items-center justify-content-center">
+                    Edit
+                  </Link>
                   {/* Changed from direct delete to opening the modal */}
                   <button 
                     onClick={() => openDeleteModal(post.id)} 
