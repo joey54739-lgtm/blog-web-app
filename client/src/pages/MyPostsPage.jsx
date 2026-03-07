@@ -34,6 +34,34 @@ function MyPostsPage() {
       });
   }, [navigate]);
 
+  // Function to handle post deletion
+  const handleDelete = (postId) => {
+    // Confirm with the user
+    if (!window.confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+      return; // Stop if the user clicks "Cancel"
+    }
+
+    const token = localStorage.getItem('token');
+
+    // Send DELETE request to the backend
+    fetch(`http://127.0.0.1:8000/api/posts/${postId}/`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Token ${token}`
+      }
+    })
+    .then(res => {
+      // DRF returns 204 No Content on successful deletion
+      if (res.ok || res.status === 204) {
+        // Update React state to remove the post instantly without refreshing the page
+        setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
+      } else {
+        throw new Error('Failed to delete the post. Please try again.');
+      }
+    })
+    .catch(err => alert(err.message));
+  };
+
   return (
     <div className="container mt-5 mb-5">
       
@@ -96,7 +124,12 @@ function MyPostsPage() {
               {/* Action Buttons */}
               <div className="flex-shrink-0 d-flex gap-2">
                 <button className="btn btn-edit btn-sm rounded-pill px-3 fw-medium">Edit</button>
-                <button className="btn btn-delete btn-sm rounded-pill px-3 fw-medium">Delete</button>
+                <button 
+                  onClick={() => handleDelete(post.id)} 
+                  className="btn btn-delete btn-sm rounded-pill px-3 fw-medium"
+                >
+                  Delete
+                </button>
               </div>
               
             </div>
