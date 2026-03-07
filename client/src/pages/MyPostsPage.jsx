@@ -5,20 +5,16 @@ function MyPostsPage() {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  // Used to redirect unauthorized users
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     
-    // Security check: if no token is found, kick them to the login page
     if (!token) {
       navigate('/login');
       return;
     }
 
-    // Fetch strictly the logged-in user's posts from our new endpoint
     fetch('http://127.0.0.1:8000/api/posts/mine/', {
       headers: {
         'Authorization': `Token ${token}`
@@ -40,66 +36,74 @@ function MyPostsPage() {
 
   return (
     <div className="container mt-5 mb-5">
-      <div className="row justify-content-center">
-        <div className="col-lg-10">
-          
-          {/* Page Header */}
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="fw-bold text-dark mb-0">My Posts</h2>
-            <Link to="/create-post" className="btn btn-primary rounded-pill px-4 fw-medium shadow-sm">
-              <i className="bi bi-plus-lg me-1"></i> Create New
-            </Link>
-          </div>
-
-          {/* Main Content Card */}
-          <div className="saas-card p-4">
-            {isLoading ? (
-              <p className="text-muted text-center py-5">Loading your amazing content...</p>
-            ) : error ? (
-              <div className="alert alert-danger">{error}</div>
-            ) : posts.length === 0 ? (
-              // Empty State UI
-              <div className="text-center py-5">
-                <i className="bi bi-journal-text fs-1 text-muted opacity-50 mb-3 d-block"></i>
-                <h5 className="fw-bold text-dark">No posts yet</h5>
-                <p className="text-muted">You haven't published any articles. Time to share your knowledge!</p>
-              </div>
-            ) : (
-              // List of User's Posts
-              <div className="list-group list-group-flush">
-                {posts.map(post => (
-                  <div key={post.id} className="list-group-item px-0 py-3 border-bottom d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-                    
-                    <div>
-                      <Link to={`/posts/${post.id}`} className="text-decoration-none">
-                        <h5 className="fw-bold text-dark mb-1 post-title">{post.post_title}</h5>
-                      </Link>
-                      <div className="d-flex gap-3 text-muted text-sm mt-2">
-                        <span>
-                          <i className="bi bi-folder2 me-1"></i>
-                          {post.category_name || "Uncategorized"}
-                        </span>
-                        <span>
-                          <i className="bi bi-calendar3 me-1"></i>
-                          {new Date(post.created_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                    
-                    {/* Action Buttons (Placeholders for upcoming Update & Delete features) */}
-                    <div className="d-flex gap-2 flex-shrink-0">
-                      <button className="btn btn-sm btn-outline-secondary rounded-pill px-3 fw-medium">Edit</button>
-                      <button className="btn btn-sm btn-outline-danger rounded-pill px-3 fw-medium">Delete</button>
-                    </div>
-
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          
+      
+      {/* Top Header Card */}
+      <div className="saas-card p-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center bg-white mb-4">
+        <div className="mb-3 mb-md-0">
+          <h2 className="fw-bold text-dark mb-1">My Dashboard</h2>
+          <p className="text-muted mb-0">Manage and refine your tech insights.</p>
         </div>
+        <Link to="/create-post" className="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
+          <i className="bi bi-plus-lg me-1"></i> Create New Post
+        </Link>
       </div>
+
+      {/* List Card */}
+      <div className="saas-card overflow-hidden">
+        {isLoading ? (
+          <p className="text-muted text-center py-5">Loading your dashboard...</p>
+        ) : error ? (
+          <div className="alert alert-danger m-4">{error}</div>
+        ) : posts.length === 0 ? (
+          <div className="text-center py-5">
+            <i className="bi bi-journal-text fs-1 text-muted opacity-50 mb-3 d-block"></i>
+            <h5 className="fw-bold text-dark">No posts yet</h5>
+            <p className="text-muted">You haven't published any articles. Time to share your knowledge!</p>
+          </div>
+        ) : (
+          posts.map(post => (
+            // Individual Dashboard Item mapping
+            <div key={post.id} className="dashboard-item d-flex align-items-center gap-4">
+              
+              {/* Thumbnail */}
+              <div className="flex-shrink-0 d-none d-md-block">
+                <div className="post-thumb-preview d-flex align-items-center justify-content-center text-muted">
+                  <i className="bi bi-image opacity-50 fs-4"></i>
+                </div>
+              </div>
+              
+              {/* Post Info */}
+              <div className="flex-grow-1">
+                <div className="d-flex align-items-center gap-2 mb-2">
+                  <span className="badge badge-soft rounded-pill px-2 py-1 small">
+                    {post.category_name || "Uncategorized"}
+                  </span>
+                  <small className="text-muted">
+                    {new Date(post.created_at).toLocaleDateString()}
+                  </small>
+                </div>
+                
+                <Link to={`/posts/${post.id}`} className="text-decoration-none">
+                  <h5 className="fw-bold mb-1 text-dark">{post.post_title}</h5>
+                </Link>
+                
+                {/* Truncate content to show just a short preview snippet */}
+                <p className="text-muted small mb-0 text-truncate" style={{ maxWidth: '600px' }}>
+                  {post.post_content.substring(0, 100)}...
+                </p>
+              </div>
+              
+              {/* Action Buttons */}
+              <div className="flex-shrink-0 d-flex gap-2">
+                <button className="btn btn-edit btn-sm rounded-pill px-3 fw-medium">Edit</button>
+                <button className="btn btn-delete btn-sm rounded-pill px-3 fw-medium">Delete</button>
+              </div>
+              
+            </div>
+          ))
+        )}
+      </div>
+
     </div>
   );
 }
