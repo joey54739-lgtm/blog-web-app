@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -55,9 +56,9 @@ function HomePage() {
                       </span>
                     </div>
                     
-                    <a href="#" className="text-decoration-none">
+                    <Link to={`/posts/${post.id}`} className="text-decoration-none">
                       <h3 className="post-title fw-bold text-dark h5 mb-2">{post.post_title}</h3>
-                    </a>
+                    </Link>
                     
                     <p className="text-muted text-truncate-2 mb-2 text-md">
                       {post.post_content}

@@ -67,3 +67,10 @@ body {
 .sticky-sidebar { 
   top: 80px; 
 }
+
+/* ARTICLE DETAIL STYLES */
+.article-content {
+  white-space: pre-wrap; /* This ensures line breaks from the database are rendered correctly */
+  line-height: 1.8;
+  font-size: 1.1rem;
+}

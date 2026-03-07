@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
+import PostDetailPage from './pages/PostDetailPage';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           {/* When the path is "/", render the HomePage component */}
           <Route path="/" element={<HomePage />} />
+          <Route path="/posts/:id" element={<PostDetailPage />} />
           <Route path="/login" element={<h2>This will become the login page soon...</h2>} />
           <Route path="/my-posts" element={<h2>This will become the user dashboard soon...</h2>} />
         </Routes>
