@@ -1,12 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import CategoryViewSet, PostViewSet, RegisterView
+from .views import CategoryViewSet, PostViewSet, RegisterView, CommentViewSet
 
 
 router = DefaultRouter()
 router.register(r'categories', CategoryViewSet)
 router.register(r'posts', PostViewSet)
+router.register(r'comments', CommentViewSet, basename='comment')
 
 urlpatterns = [
     # Include all router-generated URLs

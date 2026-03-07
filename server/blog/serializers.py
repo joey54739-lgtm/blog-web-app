@@ -34,3 +34,13 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'user', 'author_name', 'category', 'category_name', 'post_title', 'post_content', 'created_at', 'modified_at']
         read_only_fields = ['user']
+
+class CommentSerializer(serializers.ModelSerializer):
+    # allows us to display the commenter's username in React
+    author_name = serializers.ReadOnlyField(source='user.username')
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'post', 'user', 'author_name', 'comment_content', 'created_at', 'modified_at']
+        # The 'user' is automatically assigned by the backend, so we don't ask the frontend for it
+        read_only_fields = ['user']
