@@ -41,6 +41,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['id', 'post', 'user', 'author_name', 'comment_content', 'created_at', 'modified_at']
+        fields = ['id', 'post', 'user', 'author_name', 'parent', 'comment_content', 'created_at', 'modified_at']
         # The 'user' is automatically assigned by the backend, so we don't ask the frontend for it
         read_only_fields = ['user']

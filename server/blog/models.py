@@ -33,6 +33,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     # connects the comment to the user who wrote it
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     
     comment_content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
