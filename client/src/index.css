@@ -6,7 +6,7 @@ body {
   margin: 0;
 }
 
-/* 2. GLOBAL COMPONENTS */
+/* GLOBAL COMPONENTS */
 .navbar { 
   backdrop-filter: blur(12px); 
   background-color: rgba(255, 255, 255, 0.9) !important; 
@@ -20,7 +20,7 @@ body {
   background: #fff; 
 }
 
-/* 3. POST ITEM STYLES */
+/* POST ITEM STYLES */
 .post-item { 
   transition: all 0.2s ease; 
   border: 1px solid transparent; 
@@ -391,3 +391,26 @@ body {
 .cat-nav-item.active .cat-badge { background: #eff6ff; color: #3b71ca; }
 
 .text-truncate-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* SEARCH RESULTS PAGE */
+
+/* Highlighted keywords in search results */
+.hl-keyword { background-color: #e0f2fe; color: #0284c7; padding: 0 4px; border-radius: 4px; font-weight: 600; }
+
+/* Search Input Bar */
+.search-utility-bar { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); display: flex; align-items: center; gap: 12px; }
+.search-utility-input { border: none; outline: none; background: transparent; width: 100%; font-size: 1rem; font-weight: 500; color: #0f172a; }
+.search-utility-input::placeholder { color: #cbd5e1; font-weight: 400; }
+
+/* User Match Cards */
+.user-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 2rem; }
+.user-match-card {
+  border: 1px solid rgba(0,0,0,0.04); border-radius: 12px; background: #fff;
+  padding: 1rem; display: flex; align-items: center; gap: 12px;
+  transition: all 0.2s ease; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+}
+.user-match-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.04); border-color: rgba(59, 113, 202, 0.2); }
+.user-avatar-lg {
+  width: 48px; height: 48px; border-radius: 50%; background: #0f172a; color: white;
+  display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 700; flex-shrink: 0;
+}

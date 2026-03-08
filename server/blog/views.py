@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from .models import Category, Post, Comment
 from .serializers import CategorySerializer, PostSerializer, UserSerializer, CommentSerializer
+from rest_framework import viewsets, permissions, filters
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -17,6 +18,10 @@ class PostViewSet(viewsets.ModelViewSet):
     # allows anyone to READ, but only logged-in users to CREATE/UPDATE
     permission_classes = [IsAuthenticatedOrReadOnly]
     # Automatically link the post to the currently logged-in user
+
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['post_title', 'post_content', 'category__category_name', 'user__username']
+    
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
     

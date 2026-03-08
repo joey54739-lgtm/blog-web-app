@@ -8,6 +8,16 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
+  };
+
   // This effect runs every time the route (URL) changes.
   // It checks if a token exists in local storage to update the UI instantly.
   useEffect(() => {
@@ -69,13 +79,16 @@ function Navbar() {
           </ul>
           
           {/* Search Bar */}
-          <form className="d-flex me-4 align-items-center">
-            <div className="input-group input-group-sm shadow-sm">
-              <input type="text" className="form-control rounded-start-pill bg-light border-0 py-2 ps-3" placeholder="Search posts..." />
-              <button className="btn btn-light rounded-end-pill border-0 bg-light pe-3 text-primary" type="button">
-                <i className="bi bi-search"></i>
-              </button>
-            </div>
+          <form className="d-none d-lg-flex position-relative me-3" style={{ width: '250px' }} onSubmit={handleSearch}>
+            <i className="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style={{ fontSize: '0.9rem' }}></i>
+            <input 
+              className="form-control form-control-sm bg-light border-0 rounded-pill ps-5 py-2" 
+              type="search" 
+              placeholder="Search posts..." 
+              aria-label="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </form>
 
           {/* Create Post Button - Only visible if logged in */}
