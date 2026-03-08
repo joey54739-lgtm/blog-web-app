@@ -302,3 +302,50 @@ body {
 .compact-stats .like-btn:hover { transform: scale(1.1); }
 .compact-stats .chat-btn { cursor: pointer; transition: color 0.2s; color: #64748b; }
 .compact-stats .chat-btn:hover { color: #3b71ca; }
+
+/* CATEGORY FILTER & ANIMATIONS */
+.topic-grid-card.active { 
+  border: 1px solid #3b71ca; 
+  background-color: #f8fbff; 
+}
+
+.minimal-filter-bar {
+  display: flex; 
+  gap: 24px; 
+  overflow-x: auto; 
+  scrollbar-width: none; 
+  border-bottom: 1px solid #e2e8f0; 
+  padding-bottom: 0px; 
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+.minimal-filter-bar::-webkit-scrollbar { display: none; }
+
+.filter-tab {
+  color: #64748b; 
+  font-weight: 500; 
+  font-size: 0.9rem; 
+  cursor: pointer; 
+  white-space: nowrap; 
+  padding-bottom: 12px; 
+  position: relative; 
+  transition: color 0.2s;
+}
+.filter-tab:hover { color: #0f172a; }
+.filter-tab.active { color: #0f172a; font-weight: 600; }
+.filter-tab.active::after {
+  content: ''; 
+  position: absolute; 
+  bottom: -1px; 
+  left: 0; 
+  width: 100%; 
+  height: 2px; 
+  background: #3b71ca; 
+  border-radius: 2px;
+}
+
+@keyframes feedFadeIn { 
+  from { opacity: 0; transform: translateY(5px); } 
+  to { opacity: 1; transform: translateY(0); } 
+}
+.post-item.animate-fade { animation: feedFadeIn 0.3s ease forwards; }

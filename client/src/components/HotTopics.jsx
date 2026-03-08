@@ -6,7 +6,7 @@ const topicStyles = [
   { bg: 'bg-dev', icon: 'bi-braces', fire: '3.1k' }
 ];
 
-function HotTopics({ categories }) {
+function HotTopics({ categories, activeFilter, onSelectCategory }) {
   const displayCategories = categories.slice(0, 3);
 
   if (displayCategories.length === 0) return null;
@@ -15,10 +15,14 @@ function HotTopics({ categories }) {
     <div className="row g-3 mb-5">
       {displayCategories.map((cat, index) => {
         const style = topicStyles[index % topicStyles.length];
+        const isActive = activeFilter === cat.category_name;
         
         return (
           <div className="col-md-4" key={cat.id}>
-            <div className="topic-grid-card">
+            <div 
+              className={`topic-grid-card ${isActive ? 'active' : ''}`}
+              onClick={() => onSelectCategory(cat.category_name)}
+            >
               <div className="d-flex justify-content-between align-items-start">
                 <div className={`topic-icon-box ${style.bg}`}>
                   <i className={`bi ${style.icon}`}></i>
