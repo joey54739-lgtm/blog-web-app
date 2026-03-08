@@ -131,13 +131,14 @@ function HomePage() {
             </div>
 
             <div className="text-center mt-4 mb-5">
-              <button 
-                onClick={handleClearFilter} 
+              <Link 
+                to="/categories" 
+                state={{ categoryName: activeFilter }} 
                 className="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold shadow-sm" 
                 style={{ transition: 'all 0.3s', fontSize: '0.9rem' }}
               >
-                {activeFilter ? `Explore all articles` : `Explore more articles`} <i className="bi bi-arrow-right ms-1"></i>
-              </button>
+                {activeFilter ? `Explore all ${activeFilter} articles` : `Explore more articles`} <i className="bi bi-arrow-right ms-1"></i>
+              </Link>
             </div>
           </div>
 
