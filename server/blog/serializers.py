@@ -29,11 +29,18 @@ class CategorySerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     author_name = serializers.ReadOnlyField(source='user.username')
     category_name = serializers.ReadOnlyField(source='category.category_name')
+    likes_count = serializers.SerializerMethodField()
+    comments_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ['id', 'user', 'author_name', 'category', 'category_name', 'post_title', 'post_content', 'created_at', 'modified_at']
+        fields = ['id', 'user', 'author_name', 'category', 'category_name', 'post_title', 'post_content', 'created_at', 'modified_at', 'likes_count', 'comments_count']
         read_only_fields = ['user']
+
+    def get_likes_count(self, obj):
+        return obj.likes.count()
+    def get_comments_count(self, obj):
+        return obj.comments.count()
 
 class CommentSerializer(serializers.ModelSerializer):
     # allows us to display the commenter's username in React

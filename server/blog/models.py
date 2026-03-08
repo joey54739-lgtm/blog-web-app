@@ -22,6 +22,7 @@ class Post(models.Model):
     
     post_title = models.CharField(max_length=128)
     post_content = models.TextField()
+    likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     created_at = models.DateTimeField(auto_now_add=True) # time when the post was created
     modified_at = models.DateTimeField(auto_now=True)    # time when the post was last updated
 

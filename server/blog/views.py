@@ -25,6 +25,20 @@ class PostViewSet(viewsets.ModelViewSet):
         my_posts = Post.objects.filter(user=request.user).order_by('-created_at')
         serializer = self.get_serializer(my_posts, many=True)
         return Response(serializer.data)
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def like(self, request, pk=None):
+        post = self.get_object()
+        user = request.user
+        if post.likes.filter(id=user.id).exists():
+            post.likes.remove(user)
+            liked = False
+        else:
+            post.likes.add(user)
+            liked = True
+        return Response({
+            'likes_count': post.likes.count(),
+            'liked': liked
+        })
 
     # View for handling user registration
 class RegisterView(generics.CreateAPIView):

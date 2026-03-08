@@ -269,3 +269,36 @@ body {
 .view-more-replies { color: #64748b; font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-top: 8px; display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
 .view-more-replies::before { content: ""; width: 24px; height: 1px; background: #cbd5e1; }
 .view-more-replies:hover { color: #3b71ca; }
+
+.topic-grid-card {
+    border: 1px solid rgba(0,0,0,0.04);
+    border-radius: 16px;
+    background: #fff;
+    padding: 1.25rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    cursor: pointer;
+}
+.topic-grid-card:hover { 
+    transform: translateY(-4px); 
+    box-shadow: 0 12px 24px rgba(0,0,0,0.05); 
+    border-color: rgba(59, 113, 202, 0.2); 
+}
+
+.topic-icon-box {
+    width: 42px; height: 42px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; margin-bottom: 1rem;
+}
+.bg-tech { background: #eff6ff; color: #3b71ca; }
+.bg-data { background: #f0fdf4; color: #16a34a; }
+.bg-dev { background: #fefce8; color: #ca8a04; }
+
+.topic-stats { font-size: 0.75rem; color: #94a3b8; font-weight: 600; }
+
+.compact-stats { font-size: 0.8rem; color: #64748b; display: flex; gap: 16px; font-weight: 500; }
+.compact-stats span, .compact-stats a { display: flex; align-items: center; gap: 6px; text-decoration: none; }
+.compact-stats .like-btn { color: #ef4444; transition: transform 0.2s; cursor: pointer; }
+.compact-stats .like-btn:hover { transform: scale(1.1); }
+.compact-stats .chat-btn { cursor: pointer; transition: color 0.2s; color: #64748b; }
+.compact-stats .chat-btn:hover { color: #3b71ca; }
