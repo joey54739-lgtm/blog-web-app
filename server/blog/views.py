@@ -21,7 +21,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     filter_backends = [filters.SearchFilter]
     search_fields = ['post_title', 'post_content', 'category__category_name', 'user__username']
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
     
@@ -69,3 +69,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Automatically link the new comment to the currently logged-in user
         serializer.save(user=self.request.user)
+    def destroy(self, request, *args, **kwargs):
+        comment = self.get_object()
+        # Only allow the author of the comment to delete it
+        if comment.user != request.user:
+            return Response(
+                {"detail": "You do not have permission to delete this comment."}, 
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().destroy(request, *args, **kwargs)

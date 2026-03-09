@@ -17,11 +17,13 @@ const getAvatarColor = (name) => {
   return colors[index];
 };
 
-function CommentItem({ comment, allComments, onReply }) {
+function CommentItem({ comment, allComments, onReply, onDelete, currentUser }) {
   const [showReplies, setShowReplies] = useState(false);
   
   const replies = allComments.filter(c => c.parent === comment.id);
   const initial = comment.author_name ? comment.author_name.charAt(0).toUpperCase() : 'U';
+
+  const isAuthor = currentUser === comment.author_name;
 
   return (
     <div className="comment-item">
@@ -45,6 +47,16 @@ function CommentItem({ comment, allComments, onReply }) {
           <span className="action-item" onClick={() => onReply(comment.id, comment.author_name)}>
             <i className="bi bi-reply me-1"></i> Reply
           </span>
+          
+          {/* Render Delete button only if the logged-in user is the author */}
+          {isAuthor && (
+            <span 
+              className="action-item text-danger ms-2" 
+              onClick={() => onDelete(comment.id)}
+            >
+              <i className="bi bi-trash3 me-1"></i> Delete
+            </span>
+          )}
         </div>
 
         {replies.length > 0 && (
@@ -61,6 +73,8 @@ function CommentItem({ comment, allComments, onReply }) {
                     comment={reply} 
                     allComments={allComments} 
                     onReply={onReply} 
+                    onDelete={onDelete}
+                    currentUser={currentUser}
                   />
                 ))}
                 <div className="view-more-replies mt-2" onClick={() => setShowReplies(false)} style={{ color: '#94a3b8' }}>

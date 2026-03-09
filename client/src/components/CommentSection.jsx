@@ -7,7 +7,9 @@ function CommentSection({ postId }) {
   const [newComment, setNewComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [replyingTo, setReplyingTo] = useState({ id: null, name: '' }); 
+  
   const isLoggedIn = !!localStorage.getItem('token');
+  const currentUser = localStorage.getItem('username'); 
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/comments/?post=${postId}`)
@@ -38,6 +40,24 @@ function CommentSection({ postId }) {
       })
       .catch(err => alert(err.message))
       .finally(() => setIsSubmitting(false));
+  };
+
+  const handleDelete = (commentId) => {
+    if (!window.confirm("Delete this comment?")) return;
+    
+    const token = localStorage.getItem('token');
+    fetch(`http://127.0.0.1:8000/api/comments/${commentId}/`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Token ${token}` }
+    })
+    .then(res => {
+      if (res.ok) {
+        setComments(currentComments => currentComments.filter(c => c.id !== commentId && c.parent !== commentId));
+      } else {
+        throw new Error('Failed to delete comment');
+      }
+    })
+    .catch(err => alert(err.message));
   };
 
   const topLevelComments = comments.filter(c => c.parent === null);
@@ -89,6 +109,8 @@ function CommentSection({ postId }) {
               comment={comment} 
               allComments={comments} 
               onReply={(id, name) => setReplyingTo({ id, name })} 
+              onDelete={handleDelete}
+              currentUser={currentUser}
             />
           ))
         )}
