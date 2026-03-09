@@ -8,25 +8,34 @@ function SearchResultsPage() {
   const [localQuery, setLocalQuery] = useState(query);
   
   const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState([]); // Need to fetch categories for the sidebar
   const [isLoading, setIsLoading] = useState(true);
+  
+  // State for sidebar filtering within search results
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
-    // Fetch posts using Django's SearchFilter parameter "?search="
-    fetch(`http://127.0.0.1:8000/api/posts/?search=${encodeURIComponent(query)}`)
-      .then(res => res.json())
-      .then(data => {
-        setPosts(data);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to fetch search results:", err);
-        setIsLoading(false);
-      });
+    
+    // Fetch both search results and all available categories
+    Promise.all([
+      fetch(`http://127.0.0.1:8000/api/posts/?search=${encodeURIComponent(query)}`).then(res => res.json()),
+      fetch('http://127.0.0.1:8000/api/categories/').then(res => res.json())
+    ])
+    .then(([postsData, categoriesData]) => {
+      setPosts(postsData);
+      setCategories(categoriesData);
+      setActiveCategoryFilter(null); // Reset filter on new search
+      setIsLoading(false);
+    })
+    .catch(err => {
+      console.error("Failed to fetch data:", err);
+      setIsLoading(false);
+    });
   }, [query]);
 
-  // Handle a new search initiated from this page
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (localQuery.trim()) {
@@ -34,7 +43,6 @@ function SearchResultsPage() {
     }
   };
 
-  // Reuse the like handler
   const handleLike = (postId) => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -58,13 +66,18 @@ function SearchResultsPage() {
     .catch(err => console.error(err));
   };
 
-  // Extract unique users from search results to populate the "People" section
+  // Only extract users whose names actually match the search query (case-insensitive)
   const matchedUsers = Array.from(new Set(posts.map(post => post.author_name)))
-                            .filter(Boolean).slice(0, 4); // Show up to 4 users
+    .filter(name => name && name.toLowerCase().includes(query.toLowerCase()))
+    .slice(0, 4); 
+
+  // Filter the displayed posts if a sidebar category is clicked
+  const displayedPosts = activeCategoryFilter
+    ? posts.filter(post => post.category_name === activeCategoryFilter)
+    : posts;
 
   return (
     <>
-      {/* Breadcrumb Navigation */}
       <div className="container mt-3 mb-3">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb mb-0" style={{ fontSize: '0.8rem', fontWeight: '500' }}>
@@ -77,28 +90,60 @@ function SearchResultsPage() {
       <div className="container pb-5">
         <div className="row g-4 g-lg-5"> 
           
-          {/* Left Sidebar (Reusing styles from Categories page) */}
+          {/* Reconstructed Left Sidebar (Matches CategoriesPage.jsx styling) */}
           <div className="col-lg-3 d-none d-lg-block">
             <div className="nav-sidebar sticky-top" style={{ top: '80px' }}>
-              <div className="nav-sidebar-title" style={{ marginTop: 0 }}>Filter</div>
-              <div className="saas-card p-2 mb-4">
-                <div className="d-flex flex-column">
-                  <div className="cat-nav-item active">
-                    <span><i className="bi bi-file-text me-2 opacity-50"></i> Articles</span>
-                    <span className="cat-badge">{posts.length}</span>
-                  </div>
-                  <div className="cat-nav-item" style={{ cursor: 'not-allowed', opacity: 0.7 }}>
-                    <span><i className="bi bi-people me-2 opacity-50"></i> Authors</span>
-                    <span className="cat-badge">{matchedUsers.length}</span>
-                  </div>
+              
+              <div className="nav-sidebar-title" style={{ marginTop: 0 }}>Content Type</div>
+              <div className="d-flex flex-column mb-4">
+                <div className="cat-nav-item active">
+                  <span><i className="bi bi-file-text me-2 opacity-50"></i> Articles</span>
+                  <span className="cat-badge">{posts.length}</span>
+                </div>
+                <div className="cat-nav-item" style={{ cursor: 'not-allowed', opacity: 0.6 }}>
+                  <span><i className="bi bi-people me-2 opacity-50"></i> Authors</span>
+                  <span className="cat-badge">{matchedUsers.length}</span>
                 </div>
               </div>
+
+              <div className="nav-sidebar-title">Categories in Results</div>
+              <div className="d-flex flex-column">
+                
+                {/* Reset Filter Button */}
+                <div 
+                  className={`cat-nav-item ${activeCategoryFilter === null ? 'active' : ''}`}
+                  onClick={() => setActiveCategoryFilter(null)}
+                >
+                  <span>All Results</span> 
+                  <span className="cat-badge">{posts.length}</span>
+                </div>
+
+                {/* Dynamic Category List based on search results */}
+                {categories.map(cat => {
+                  const postCount = posts.filter(p => p.category_name === cat.category_name).length;
+                  
+                  // Only show category in sidebar if there are matching posts for it
+                  if (postCount === 0) return null; 
+                  
+                  return (
+                    <div 
+                      key={cat.id}
+                      className={`cat-nav-item ${activeCategoryFilter === cat.category_name ? 'active' : ''}`}
+                      onClick={() => setActiveCategoryFilter(cat.category_name)}
+                    >
+                      <span>{cat.category_name}</span> 
+                      <span className="cat-badge">{postCount}</span>
+                    </div>
+                  );
+                })}
+
+              </div>
+
             </div>
           </div>
 
           <div className="col-lg-9">
             
-            {/* Search Input Bar */}
             <form onSubmit={handleSearchSubmit} className="search-utility-bar mb-4">
               <i className="bi bi-search text-muted ms-2"></i>
               <input 
@@ -111,7 +156,6 @@ function SearchResultsPage() {
               <button type="submit" className="btn btn-primary btn-sm rounded-pill px-3 fw-bold">Search</button>
             </form>
 
-            {/* Dynamic People Section */}
             {matchedUsers.length > 0 && (
               <>
                 <div className="d-flex justify-content-between align-items-center mb-3 px-1">
@@ -137,21 +181,20 @@ function SearchResultsPage() {
             )}
 
             <div className="d-flex justify-content-between align-items-center mb-3 px-1">
-              <span className="text-dark fw-bold" style={{ fontSize: '1.1rem' }}>Articles ({posts.length})</span>
-              {query && <span className="text-muted small">Showing results for "<span className="hl-keyword">{query}</span>"</span>}
+              <span className="text-dark fw-bold" style={{ fontSize: '1.1rem' }}>Articles ({displayedPosts.length})</span>
+              {query && <span className="text-muted small">Showing results for "{query}"</span>}
             </div>
 
-            {/* Articles List reusing PostItem */}
             <div className="saas-card px-4 py-2 mb-4">
               {isLoading ? (
                 <div className="text-center py-5 text-muted">Searching...</div>
-              ) : posts.length === 0 ? (
+              ) : displayedPosts.length === 0 ? (
                 <div className="text-center py-5 text-muted">
                   <i className="bi bi-search text-muted fs-1 mb-3 d-block opacity-50"></i>
-                  No results found for "{query}". Try a different keyword.
+                  No results found for "{query}" in this category.
                 </div>
               ) : (
-                posts.map(post => (
+                displayedPosts.map(post => (
                   <PostItem key={post.id} post={post} onLike={handleLike} />
                 ))
               )}
