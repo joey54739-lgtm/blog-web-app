@@ -438,3 +438,76 @@ body {
 .btn-edit:hover { background-color: #eff6ff; border-color: #bfdbfe; color: #3b71ca; }
 .btn-delete { background-color: #fff; border: 1px solid #fee2e2; color: #ef4444; font-weight: 500; font-size: 0.8rem; }
 .btn-delete:hover { background-color: #ef4444; color: #fff; border-color: #ef4444; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2); }
+
+/* NAVBAR LOGGED-IN STATE */
+
+.nav-icon-btn {
+  color: #64748b;
+  font-size: 1.25rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.nav-icon-btn:hover { color: #0f172a; }
+
+.nav-divider {
+  width: 1px;
+  height: 20px;
+  background-color: #cbd5e1;
+  margin: 0 16px;
+}
+
+.user-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 0.95rem;
+  user-select: none;
+}
+
+.saas-dropdown-menu {
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  padding: 8px;
+  min-width: 180px;
+  z-index: 1050;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.saas-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  color: #475569;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  text-decoration: none;
+  cursor: pointer;
+}
+.saas-dropdown-item:hover {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.saas-dropdown-divider {
+  height: 1px;
+  background-color: #f1f5f9;
+  margin: 8px 0;
+}
+
+.saas-dropdown-item.text-danger:hover {
+  background-color: #fee2e2;
+  color: #ef4444 !important;
+}
