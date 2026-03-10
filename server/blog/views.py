@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAu
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from django.contrib.auth.models import User
-from .models import Category, Post, Comment
+from .models import Category, Post, Comment, Profile
 from .serializers import CategorySerializer, PostSerializer, UserSerializer, CommentSerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -103,3 +103,15 @@ def update_profile(request):
             {"error": "This username is already taken or invalid."}, 
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_profile(request):
+    user = request.user
+    profile, created = Profile.objects.get_or_create(user=user)
+    
+    return Response({
+        "username": user.username,
+        "displayName": user.first_name,
+        "bio": profile.bio if profile.bio else ""
+    }, status=status.HTTP_200_OK)

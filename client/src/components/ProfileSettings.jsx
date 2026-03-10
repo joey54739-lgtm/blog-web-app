@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function ProfileSettings({ username, onProfileUpdate }) {
   const [formData, setFormData] = useState({
@@ -9,6 +9,32 @@ function ProfileSettings({ username, onProfileUpdate }) {
   
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    
+    fetch('http://127.0.0.1:8000/api/profile/me/', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Token ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      setFormData({
+        username: data.username || username || '',
+        displayName: data.displayName || username || '',
+        bio: data.bio || ''
+      });
+      setIsLoading(false);
+    })
+    .catch(err => {
+      console.error("Failed to fetch profile", err);
+      setIsLoading(false);
+    });
+  }, [username]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,7 +74,6 @@ function ProfileSettings({ username, onProfileUpdate }) {
         if (onProfileUpdate) {
           onProfileUpdate(data.username);
         }
-        
         window.dispatchEvent(new CustomEvent('profileUpdated')); 
       }
 
@@ -59,6 +84,15 @@ function ProfileSettings({ username, onProfileUpdate }) {
       alert(err.message);
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="saas-card p-5 text-center text-muted border-0 shadow-sm mb-4">
+        <div className="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+        Loading profile data...
+      </div>
+    );
+  }
 
   return (
     <div className="saas-card p-4 border-0 shadow-sm mb-4">
