@@ -9,6 +9,7 @@ function SearchResultsPage() {
   
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]); // Need to fetch categories for the sidebar
+  const [matchedUsers, setMatchedUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
   // State for sidebar filtering within search results
@@ -19,15 +20,16 @@ function SearchResultsPage() {
   useEffect(() => {
     setIsLoading(true);
     
-    // Fetch both search results and all available categories
     Promise.all([
       fetch(`http://127.0.0.1:8000/api/posts/?search=${encodeURIComponent(query)}`).then(res => res.json()),
-      fetch('http://127.0.0.1:8000/api/categories/').then(res => res.json())
+      fetch('http://127.0.0.1:8000/api/categories/').then(res => res.json()),
+      fetch(`http://127.0.0.1:8000/api/users/search/?q=${encodeURIComponent(query)}`).then(res => res.json())
     ])
-    .then(([postsData, categoriesData]) => {
+    .then(([postsData, categoriesData, usersData]) => {
       setPosts(postsData);
       setCategories(categoriesData);
-      setActiveCategoryFilter(null); // Reset filter on new search
+      setMatchedUsers(usersData);
+      setActiveCategoryFilter(null);
       setIsLoading(false);
     })
     .catch(err => {
@@ -65,19 +67,6 @@ function SearchResultsPage() {
     })
     .catch(err => console.error(err));
   };
-
-  const uniqueUsersMap = new Map();
-  posts.forEach(post => {
-    if (post.author_name && post.author_name.toLowerCase().includes(query.toLowerCase())) {
-      if (!uniqueUsersMap.has(post.author_name)) {
-        uniqueUsersMap.set(post.author_name, {
-          username: post.author_name,
-          bio: post.author_bio 
-        });
-      }
-    }
-  });
-  const matchedUsers = Array.from(uniqueUsersMap.values()).slice(0, 4);
 
   // Filter the displayed posts if a sidebar category is clicked
   const displayedPosts = activeCategoryFilter

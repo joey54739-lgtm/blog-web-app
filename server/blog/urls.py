@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import CategoryViewSet, PostViewSet, RegisterView, CommentViewSet, update_profile, get_profile
+from .views import CategoryViewSet, PostViewSet, RegisterView, CommentViewSet, update_profile, get_profile, search_users
 
 
 router = DefaultRouter()
@@ -24,5 +24,7 @@ urlpatterns = [
 
     path('profile/update/', update_profile, name='api_profile_update'),
     path('profile/me/', get_profile, name='api_profile_me'),
+
+    path('users/search/', search_users, name='api_search_users'),
 
 ]

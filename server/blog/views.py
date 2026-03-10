@@ -115,3 +115,22 @@ def get_profile(request):
         "displayName": user.first_name,
         "bio": profile.bio if profile.bio else ""
     }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def search_users(request):
+    query = request.query_params.get('q', '')
+    if not query:
+        return Response([])
+        
+    users = User.objects.filter(username__icontains=query)[:4]
+    
+    user_data = []
+    for u in users:
+        bio = u.profile.bio if hasattr(u, 'profile') and u.profile.bio else "This author hasn't written a bio yet."
+        user_data.append({
+            "username": u.username,
+            "bio": bio
+        })
+        
+    return Response(user_data, status=status.HTTP_200_OK)
