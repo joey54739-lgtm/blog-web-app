@@ -14,7 +14,8 @@ function MyPostsPage() {
   const [activeView, setActiveView] = useState('all');
 
   const navigate = useNavigate();
-  const username = localStorage.getItem('username');
+  // const username = localStorage.getItem('username');
+  const [username, setUsername] = useState(localStorage.getItem('username') || '');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -173,7 +174,7 @@ function MyPostsPage() {
             
             {/* View Engine: Switch between Profile Form and Posts List */}
             {activeView === 'profile' ? (
-              <ProfileSettings username={username} />
+              <ProfileSettings username={username} onProfileUpdate={setUsername} />
             ) : activeView === 'security' ? (
               <div className="saas-card p-5 text-center text-muted border-0 shadow-sm mb-4">
                 <i className="bi bi-shield-lock fs-1 d-block mb-3 opacity-50"></i>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function ProfileSettings({ username }) {
+function ProfileSettings({ username, onProfileUpdate }) {
   const [formData, setFormData] = useState({
     username: username || '',
     displayName: username || '',
@@ -35,20 +35,21 @@ function ProfileSettings({ username }) {
     })
     .then(async res => {
       const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to update profile');
-      }
+      if (!res.ok) throw new Error(data.error || 'Failed to update profile');
       return data;
     })
     .then(data => {
       setIsSaving(false);
       setSaveMessage('Profile updated successfully!');
       
-      // Crucial Step: Update the browser's memory if the username changed
       if (data.username) {
         localStorage.setItem('username', data.username);
-        // Force a tiny visual update to the Navbar without reloading the whole page
-        window.dispatchEvent(new Event('storage')); 
+        
+        if (onProfileUpdate) {
+          onProfileUpdate(data.username);
+        }
+        
+        window.dispatchEvent(new CustomEvent('profileUpdated')); 
       }
 
       setTimeout(() => setSaveMessage(''), 3000);

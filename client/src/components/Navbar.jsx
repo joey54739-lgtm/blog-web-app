@@ -12,17 +12,27 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const storedUsername = localStorage.getItem('username');
-    
-    if (token) {
-      setIsLoggedIn(true);
-      setUsername(storedUsername || 'User');
-    } else {
-      setIsLoggedIn(false);
-      setUsername('');
-    }
+useEffect(() => {
+    const updateAuthStatus = () => {
+      const token = localStorage.getItem('token');
+      const storedUsername = localStorage.getItem('username');
+      
+      if (token) {
+        setIsLoggedIn(true);
+        setUsername(storedUsername || 'User');
+      } else {
+        setIsLoggedIn(false);
+        setUsername('');
+      }
+    };
+
+    updateAuthStatus();
+
+    window.addEventListener('profileUpdated', updateAuthStatus);
+
+    return () => {
+      window.removeEventListener('profileUpdated', updateAuthStatus);
+    };
   }, [location]);
 
   useEffect(() => {
