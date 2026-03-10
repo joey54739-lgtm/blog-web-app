@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import CategoryViewSet, PostViewSet, RegisterView, CommentViewSet
+from .views import CategoryViewSet, PostViewSet, RegisterView, CommentViewSet, update_profile
 
 
 router = DefaultRouter()
@@ -18,4 +18,8 @@ urlpatterns = [
     
     # Built-in DRF view that accepts username/password and returns a Token
     path('login/', obtain_auth_token, name='api_login'), 
+
+    # Profile update endpoint
+    path('profile/update/', update_profile, name='api_profile_update'),
+
 ]

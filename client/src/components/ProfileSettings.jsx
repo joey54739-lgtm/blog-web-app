@@ -23,18 +23,40 @@ function ProfileSettings({ username }) {
     setIsSaving(true);
     setSaveMessage('');
 
-    // Simulate API call delay for UX
-    setTimeout(() => {
-      // NOTE: Here is where we will eventually put the fetch() call 
-      // to send the updated data to your Django backend.
-      console.log("Data to send to backend:", formData);
-      
+    const token = localStorage.getItem('token');
+
+    fetch('http://127.0.0.1:8000/api/profile/update/', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Token ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(async res => {
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to update profile');
+      }
+      return data;
+    })
+    .then(data => {
       setIsSaving(false);
       setSaveMessage('Profile updated successfully!');
       
-      // Hide the success message after 3 seconds
+      // Crucial Step: Update the browser's memory if the username changed
+      if (data.username) {
+        localStorage.setItem('username', data.username);
+        // Force a tiny visual update to the Navbar without reloading the whole page
+        window.dispatchEvent(new Event('storage')); 
+      }
+
       setTimeout(() => setSaveMessage(''), 3000);
-    }, 800);
+    })
+    .catch(err => {
+      setIsSaving(false);
+      alert(err.message);
+    });
   };
 
   return (
