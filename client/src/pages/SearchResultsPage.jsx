@@ -66,10 +66,18 @@ function SearchResultsPage() {
     .catch(err => console.error(err));
   };
 
-  // Only extract users whose names actually match the search query (case-insensitive)
-  const matchedUsers = Array.from(new Set(posts.map(post => post.author_name)))
-    .filter(name => name && name.toLowerCase().includes(query.toLowerCase()))
-    .slice(0, 4); 
+  const uniqueUsersMap = new Map();
+  posts.forEach(post => {
+    if (post.author_name && post.author_name.toLowerCase().includes(query.toLowerCase())) {
+      if (!uniqueUsersMap.has(post.author_name)) {
+        uniqueUsersMap.set(post.author_name, {
+          username: post.author_name,
+          bio: post.author_bio 
+        });
+      }
+    }
+  });
+  const matchedUsers = Array.from(uniqueUsersMap.values()).slice(0, 4);
 
   // Filter the displayed posts if a sidebar category is clicked
   const displayedPosts = activeCategoryFilter
@@ -162,18 +170,24 @@ function SearchResultsPage() {
                   <span className="text-dark fw-bold" style={{ fontSize: '1.1rem' }}>People</span>
                 </div>
                 <div className="user-grid">
-                  {matchedUsers.map(username => (
-                    <div key={username} className="user-match-card">
+                  {matchedUsers.map(user => (
+                    <div key={user.username} className="user-match-card">
                       <div className="user-avatar-lg bg-primary">
-                        {username.charAt(0).toUpperCase()}
+                        {user.username.charAt(0).toUpperCase()}
                       </div>
                       <div className="flex-grow-1 overflow-hidden">
-                        <h6 className="fw-bold text-dark mb-0 text-truncate">{username}</h6>
+                        <h6 className="fw-bold text-dark mb-0 text-truncate">{user.username}</h6>
                         <div className="text-muted small text-truncate" style={{ fontSize: '0.8rem' }}>
-                          Author in search results
+                          {user.bio}
                         </div>
                       </div>
-                      <button className="btn btn-light btn-sm rounded-pill px-3 fw-bold text-primary" style={{ fontSize: '0.75rem' }}>View</button>
+                      <Link 
+                        to={`/profile/${user.username}`} 
+                        className="btn btn-light btn-sm rounded-pill px-3 fw-bold text-primary" 
+                        style={{ fontSize: '0.75rem' }}
+                      >
+                        View
+                      </Link>
                     </div>
                   ))}
                 </div>
