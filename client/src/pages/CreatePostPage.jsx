@@ -93,7 +93,7 @@ function CreatePostPage() {
               </div>
 
               <div className="d-flex gap-2 justify-content-end mt-4">
-                <button type="button" onClick={() => navigate('/')} className="btn btn-light rounded-pill px-4">Cancel</button>
+                <button type="button" onClick={() => navigate(-1)} className="btn btn-light rounded-pill px-4">Cancel</button>
                 <button type="submit" disabled={isLoading} className="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
                   {isLoading ? 'Publishing...' : 'Publish Post'}
                 </button>
