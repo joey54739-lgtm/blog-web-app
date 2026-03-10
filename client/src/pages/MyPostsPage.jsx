@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import PostItem from '../components/PostItem';
 import ProfileSettings from '../components/ProfileSettings';
 
@@ -11,11 +11,17 @@ function MyPostsPage() {
   const [postToDelete, setPostToDelete] = useState(null);
 
   // View state engine: 'all', 'profile', 'security', or a specific category_name
-  const [activeView, setActiveView] = useState('all');
+  const location = useLocation();
+  const [activeView, setActiveView] = useState(location.state?.activeView || 'all');
 
   const navigate = useNavigate();
-  // const username = localStorage.getItem('username');
   const [username, setUsername] = useState(localStorage.getItem('username') || '');
+
+  useEffect(() => {
+    if (location.state?.activeView) {
+      setActiveView(location.state.activeView);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -105,7 +111,7 @@ function MyPostsPage() {
           
           <div className="d-flex gap-2">
             <Link to="/create-post" className="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm d-flex align-items-center gap-2" style={{ fontSize: '0.85rem' }}>
-              <i className="bi bi-pencil-square"></i> Write
+               New Post
             </Link>
           </div>
         </div>

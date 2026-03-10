@@ -84,7 +84,7 @@ useEffect(() => {
             </li>
             {isLoggedIn && (
               <li className="nav-item">
-                <Link className="nav-link fw-medium" to="/my-posts">My Posts</Link>
+                <Link className="nav-link fw-medium" to="/my-posts">My Workspace</Link>
               </li>
             )}
           </ul>
@@ -135,10 +135,10 @@ useEffect(() => {
 
                   {isDropdownOpen && (
                     <div className="saas-dropdown-menu position-absolute end-0 bg-white mt-3">
-                      <Link to="/my-posts" className="saas-dropdown-item" onClick={() => setIsDropdownOpen(false)}>
+                      <Link to="/my-posts" state={{ activeView: 'profile' }} className="saas-dropdown-item" onClick={() => setIsDropdownOpen(false)}>
                         <i className="bi bi-person fs-5 opacity-75"></i> My Profile
                       </Link>
-                      <Link to="#" className="saas-dropdown-item" onClick={() => setIsDropdownOpen(false)}>
+                      <Link to="/my-posts" state={{ activeView: 'security' }} className="saas-dropdown-item" onClick={() => setIsDropdownOpen(false)}>
                         <i className="bi bi-gear fs-5 opacity-75"></i> Settings
                       </Link>
                       
