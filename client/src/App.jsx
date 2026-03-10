@@ -9,6 +9,7 @@ import MyPostsPage from './pages/MyPostsPage';
 import EditPostPage from './pages/EditPostPage';
 import CategoriesPage from './pages/CategoriesPage';
 import SearchResultsPage from './pages/SearchResultsPage';
+import PublicProfilePage from './pages/PublicProfilePage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/edit-post/:id" element={<EditPostPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/search" element={<SearchResultsPage />} />
+          <Route path="/profile/:username" element={<PublicProfilePage />} />
         </Routes>
       {/* </div> */}
     </Router>
