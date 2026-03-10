@@ -86,9 +86,15 @@ def update_profile(request):
             
         user.save()
         
+        profile, created = Profile.objects.get_or_create(user=user)
+        if 'bio' in data:
+            profile.bio = data['bio'].strip()
+            profile.save()
+        
         return Response({
             "username": user.username,
             "displayName": user.first_name,
+            "bio": profile.bio,
             "detail": "Profile updated successfully!"
         }, status=status.HTTP_200_OK)
         
