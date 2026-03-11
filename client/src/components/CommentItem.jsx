@@ -24,6 +24,7 @@ function CommentItem({ comment, allComments, onSubmitReply, onDelete, currentUse
   const [isReplying, setIsReplying] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   
   const replies = allComments.filter(c => c.parent === comment.id);
   const initial = comment.author_name ? comment.author_name.charAt(0).toUpperCase() : 'U';
@@ -74,12 +75,33 @@ function CommentItem({ comment, allComments, onSubmitReply, onDelete, currentUse
             <i className="bi bi-reply-fill"></i> Reply
           </div>
           
-          {isAuthor && (
+          {/* DEFAULT DELETE BUTTON */}
+          {isAuthor && !isConfirmingDelete && (
             <div 
-              className="action-btn text-danger ms-2" 
-              onClick={() => onDelete(comment.id)}
+              className="action-btn action-delete ms-2" 
+              onClick={() => setIsConfirmingDelete(true)}
             >
               <i className="bi bi-trash3"></i> Delete
+            </div>
+          )}
+
+          {/* INLINE CONFIRMATION BOX */}
+          {isAuthor && isConfirmingDelete && (
+            <div className="inline-confirm-box ms-2">
+              <span className="confirm-msg">Delete this?</span>
+              <span 
+                className="btn-confirm-yes" 
+                onClick={() => onDelete(comment.id)}
+              >
+                Yes
+              </span>
+              <span className="text-muted opacity-50">|</span>
+              <span 
+                className="btn-confirm-no" 
+                onClick={() => setIsConfirmingDelete(false)}
+              >
+                Cancel
+              </span>
             </div>
           )}
         </div>

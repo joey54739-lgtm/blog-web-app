@@ -66,7 +66,7 @@ function CommentSection({ postId }) {
   };
 
   const handleDelete = (commentId) => {
-    if (!window.confirm("Delete this comment?")) return;
+    // if (!window.confirm("Delete this comment?")) return;
     
     const token = localStorage.getItem('token');
     fetch(`http://127.0.0.1:8000/api/comments/${commentId}/`, {

@@ -638,3 +638,24 @@ body {
 
 .btn-reply-pill { background-color: #3b82f6; color: white; border: none; border-radius: 100px; padding: 4px 14px; font-weight: 600; font-size: 0.8rem; transition: all 0.2s; margin-left: 4px; cursor: pointer;}
 .btn-reply-pill:hover { background-color: #2563eb; }
+
+/* INLINE DELETE CONFIRM */
+.action-delete { color: #ef4444; }
+.action-delete:hover { color: #dc2626; }
+
+.inline-confirm-box { 
+    display: flex; align-items: center; gap: 12px; 
+    background: #fef2f2; padding: 2px 12px; border-radius: 6px; 
+    animation: fadeInRight 0.2s ease-out; 
+}
+
+.confirm-msg { color: #ef4444; font-size: 0.8rem; font-weight: 500; }
+.btn-confirm-yes { color: #dc2626; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.btn-confirm-yes:hover { text-decoration: underline; }
+.btn-confirm-no { color: #64748b; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+.btn-confirm-no:hover { color: #0f172a; }
+
+@keyframes fadeInRight { 
+    from { opacity: 0; transform: translateX(-10px); } 
+    to { opacity: 1; transform: translateX(0); } 
+}
