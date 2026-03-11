@@ -6,7 +6,6 @@ function CommentSection({ postId }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [replyingTo, setReplyingTo] = useState({ id: null, name: '' }); 
   
   const isLoggedIn = !!localStorage.getItem('token');
   const currentUser = localStorage.getItem('username'); 
@@ -18,7 +17,8 @@ function CommentSection({ postId }) {
       .catch(err => console.error("Failed to fetch comments", err));
   }, [postId]);
 
-  const handleSubmit = (e) => {
+  // Handle Top-Level Comments (Always parent = null)
+  const handleTopLevelSubmit = (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
     setIsSubmitting(true);
@@ -27,7 +27,7 @@ function CommentSection({ postId }) {
     fetch('http://127.0.0.1:8000/api/comments/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
-      body: JSON.stringify({ post: postId, comment_content: newComment, parent: replyingTo.id })
+      body: JSON.stringify({ post: postId, comment_content: newComment, parent: null }) // explicitly null
     })
       .then(res => {
         if (!res.ok) throw new Error('Failed to post comment');
@@ -36,10 +36,33 @@ function CommentSection({ postId }) {
       .then(data => {
         setComments([...comments, data]);
         setNewComment('');
-        setReplyingTo({ id: null, name: '' });
       })
       .catch(err => alert(err.message))
       .finally(() => setIsSubmitting(false));
+  };
+
+  // Handle Inline Replies (Passed down to CommentItem)
+  const handleInlineReply = async (parentId, content) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("Please log in to reply.");
+      return;
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/comments/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
+        body: JSON.stringify({ post: postId, comment_content: content, parent: parentId })
+      });
+
+      if (!response.ok) throw new Error('Failed to post reply');
+      const newReply = await response.json();
+      setComments(prevComments => [...prevComments, newReply]);
+      
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   const handleDelete = (commentId) => {
@@ -64,36 +87,29 @@ function CommentSection({ postId }) {
 
   return (
     <section className="comment-section">
-      <div className="comment-section-title">
-        Comments <span className="text-muted" style={{ fontWeight: 'normal', fontSize: '1.1rem' }}>({comments.length})</span>
+      <div className="comment-section-title mb-4">
+        Comments <span className="text-muted fw-normal fs-6">({comments.length})</span>
       </div>
 
       {isLoggedIn ? (
-        <div className="comment-input-box">
-          {replyingTo.id && (
-            <div className="mb-2 d-flex align-items-center gap-2">
-              <span className="badge bg-light text-primary border rounded-pill px-3 py-2">
-                Replying to @{replyingTo.name}
-              </span>
-              <button type="button" className="btn-close" style={{ fontSize: '0.6rem' }} onClick={() => setReplyingTo({ id: null, name: '' })}></button>
-            </div>
-          )}
-          
+        <div className="saas-card p-4 mb-5 border-0 shadow-sm">
           <textarea 
-            rows="2" 
-            placeholder={replyingTo.id ? "Write a reply..." : "Share your thoughts..."}
+            className="form-control border-0 bg-light p-3"
+            rows="3" 
+            placeholder="Share your thoughts..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
+            style={{ borderRadius: '12px', resize: 'none' }}
           ></textarea>
           
-          <div className="text-end mt-2">
-            <button className="btn btn-primary btn-sm rounded-pill px-4 fw-bold" onClick={handleSubmit} disabled={isSubmitting}>
-              {isSubmitting ? 'Posting...' : 'Post Comment'}
+          <div className="text-end mt-3">
+            <button className="btn btn-primary rounded-pill px-4 fw-bold" onClick={handleTopLevelSubmit} disabled={isSubmitting}>
+              {isSubmitting ? 'Posting...' : 'Send'}
             </button>
           </div>
         </div>
       ) : (
-        <div className="text-center text-muted mb-5 py-4 border rounded-4 bg-light">
+        <div className="text-center text-muted mb-5 py-4 border rounded bg-light">
           <p className="mb-2">Join the conversation</p>
           <Link to="/login" className="btn btn-primary btn-sm rounded-pill px-4 fw-medium">Log in to comment</Link>
         </div>
@@ -101,14 +117,17 @@ function CommentSection({ postId }) {
 
       <div>
         {topLevelComments.length === 0 ? (
-          <div className="text-center text-muted py-4">No comments yet. Be the first!</div>
+          <div className="text-center text-muted py-5">
+             <i className="bi bi-chat-square-dots fs-1 d-block opacity-25 mb-3"></i>
+             No comments yet. Be the first to share your thoughts!
+          </div>
         ) : (
           topLevelComments.map(comment => (
             <CommentItem 
               key={comment.id} 
               comment={comment} 
               allComments={comments} 
-              onReply={(id, name) => setReplyingTo({ id, name })} 
+              onSubmitReply={handleInlineReply} // Pass the new generic submitter down
               onDelete={handleDelete}
               currentUser={currentUser}
             />
