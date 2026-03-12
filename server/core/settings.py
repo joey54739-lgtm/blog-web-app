@@ -25,7 +25,11 @@ SECRET_KEY = "django-insecure-ozslq*ck*g#4l0z+qr*mojz3+^!@30%esxae$*1g=q%9v0jnv$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'blog-backend-wuzu.onrender.com', 
+    '127.0.0.1', 
+    'localhost'
+]
 
 
 # Application definition
@@ -122,10 +126,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 # List of websites that are allowed to send requests to our backend (CORS whitelist)
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 # REST Framework Global Settings
 REST_FRAMEWORK = {
