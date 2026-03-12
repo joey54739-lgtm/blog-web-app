@@ -111,7 +111,7 @@ function MyPostsPage() {
           
           <div className="d-flex gap-2">
             <Link to="/create-post" className="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm d-flex align-items-center gap-2" style={{ fontSize: '0.85rem' }}>
-               New Post
+               Start writing...
             </Link>
           </div>
         </div>
@@ -204,13 +204,34 @@ function MyPostsPage() {
                       </div>
                     </div>
                     
-                    <div className="flex-shrink-0 d-flex flex-column gap-2 ms-4">
-                      <Link to={`/edit-post/${post.id}`} className="btn btn-edit rounded-pill px-3 py-1 text-center text-decoration-none">
-                        Edit
-                      </Link>
-                      <button onClick={() => confirmDelete(post.id)} className="btn btn-delete rounded-pill px-3 py-1">
-                        Delete
-                      </button>
+                    <div className="flex-shrink-0 d-flex flex-column gap-2 ms-4 align-items-end">
+                      {postToDelete !== post.id ? (
+                        <>
+                          <Link to={`/edit-post/${post.id}`} className="btn btn-edit rounded-pill px-3 py-1 text-center text-decoration-none" style={{ minWidth: '80px' }}>
+                            Edit
+                          </Link>
+                          <button onClick={() => confirmDelete(post.id)} className="btn btn-delete rounded-pill px-3 py-1" style={{ minWidth: '80px' }}>
+                            Delete
+                          </button>
+                        </>
+                      ) : (
+                        <div className="inline-confirm-box">
+                          <span className="confirm-msg">Delete this?</span>
+                          <span 
+                            className="btn-confirm-yes" 
+                            onClick={executeDelete} 
+                          >
+                            Yes
+                          </span>
+                          <span className="text-muted opacity-50 px-1">|</span>
+                          <span 
+                            className="btn-confirm-no" 
+                            onClick={cancelDelete}
+                          >
+                            Cancel
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -224,26 +245,6 @@ function MyPostsPage() {
           </div>
         </div>
       </div>
-
-      {postToDelete && (
-        <div className="saas-modal-overlay">
-          <div className="saas-modal-content">
-            <div className="saas-modal-header">
-              <div className="icon-box">
-                <i className="bi bi-exclamation-triangle-fill"></i>
-              </div>
-              <h4 className="fw-bold mb-1">Delete Post?</h4>
-            </div>
-            <div className="saas-modal-body text-muted">
-              Are you sure you want to delete this article? This action cannot be undone.
-            </div>
-            <div className="saas-modal-footer">
-              <button className="btn-saas-secondary" onClick={cancelDelete}>Cancel</button>
-              <button className="btn-saas-danger" onClick={executeDelete}>Yes, Delete</button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

@@ -82,11 +82,19 @@ useEffect(() => {
             <li className="nav-item">
               <Link className="nav-link fw-medium" to="/categories">Categories</Link>
             </li>
-            {isLoggedIn && (
+            {/* {isLoggedIn && (
               <li className="nav-item">
                 <Link className="nav-link fw-medium" to="/my-posts">My Workspace</Link>
               </li>
-            )}
+            )} */}
+            <li className="nav-item">
+              <Link 
+                className="nav-link fw-medium" 
+                to={isLoggedIn ? "/my-posts" : "/login"}
+              >
+                My Workspace
+              </Link>
+            </li>
           </ul>
           
           <form className="d-none d-lg-flex position-relative me-3" style={{ width: '250px' }} onSubmit={handleSearch}>
@@ -124,8 +132,13 @@ useEffect(() => {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
                     <div 
-                      className="bg-dark text-white rounded-circle d-flex justify-content-center align-items-center fw-bold" 
-                      style={{ width: '32px', height: '32px', fontSize: '0.85rem' }}
+                      className="text-white rounded-circle d-flex justify-content-center align-items-center fw-bold shadow-sm" 
+                      style={{ 
+                        width: '32px', 
+                        height: '32px', 
+                        fontSize: '0.85rem',
+                        backgroundColor: '#3459e6'
+                      }}
                     >
                       {username ? username.charAt(0).toUpperCase() : 'U'}
                     </div>
@@ -156,8 +169,8 @@ useEffect(() => {
               </>
             ) : (
               <>
-                <Link to="/login" className="text-decoration-none text-muted fw-medium fs-6 me-3">Sign In</Link>
-                <Link to="/register" className="btn btn-primary btn-sm rounded-pill px-4 fw-medium shadow-sm py-2">Get Started</Link>
+                <Link to="/login" className="text-decoration-none text-muted fw-medium fs-6 me-3">Log In</Link>
+                <Link to="/register" className="btn btn-primary btn-sm rounded-pill px-4 fw-medium shadow-sm py-2">Sign up</Link>
               </>
             )}
           </div>

@@ -11,12 +11,6 @@ const timeAgo = (dateString) => {
   return `${Math.floor(diffHrs / 24)}d ago`;
 };
 
-const getAvatarColor = (name) => {
-  const colors = ['#3b71ca', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
-  const index = name ? name.charCodeAt(0) % colors.length : 0;
-  return colors[index];
-};
-
 function CommentItem({ comment, allComments, onSubmitReply, onDelete, currentUser }) {
   const [showReplies, setShowReplies] = useState(false);
   
@@ -46,10 +40,7 @@ function CommentItem({ comment, allComments, onSubmitReply, onDelete, currentUse
 
   return (
     <div className="comment-item">
-      <div 
-        className="comment-avatar avatar-circle-comment" 
-        style={{ backgroundColor: getAvatarColor(comment.author_name) }}
-      >
+      <div className="comment-avatar avatar-circle-comment">
         {initial}
       </div>
       
@@ -109,7 +100,7 @@ function CommentItem({ comment, allComments, onSubmitReply, onDelete, currentUse
         {/* INLINE COMPACT REPLY BOX */}
         {isReplying && (
           <div className="inline-reply-compact">
-            <div className="inline-reply-avatar" style={{ backgroundColor: getAvatarColor(currentUser) }}>
+            <div className="inline-reply-avatar">
               {currentUser ? currentUser.charAt(0).toUpperCase() : 'U'}
             </div>
             

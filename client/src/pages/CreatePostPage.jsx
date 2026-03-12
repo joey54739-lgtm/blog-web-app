@@ -38,7 +38,7 @@ function CreatePostPage() {
     })
     .then(() => {
       setIsLoading(false);
-      navigate('/'); // Redirect to home after success
+      navigate('/my-posts'); // Redirect to home after success
     })
     .catch(err => {
       alert(err.message);
@@ -95,7 +95,7 @@ function CreatePostPage() {
               <div className="d-flex gap-2 justify-content-end mt-4">
                 <button type="button" onClick={() => navigate(-1)} className="btn btn-light rounded-pill px-4">Cancel</button>
                 <button type="submit" disabled={isLoading} className="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
-                  {isLoading ? 'Publishing...' : 'Publish Post'}
+                  {isLoading ? 'Publishing...' : 'Publish now'}
                 </button>
               </div>
             </form>
