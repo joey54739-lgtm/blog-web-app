@@ -19,8 +19,8 @@ function HomePage() {
 
   useEffect(() => {
     Promise.all([
-      fetch('http://127.0.0.1:8000/api/posts/').then(res => res.json()),
-      fetch('http://127.0.0.1:8000/api/categories/').then(res => res.json())
+      fetch('https://blog-backend-wuzu.onrender.com/api/posts/').then(res => res.json()),
+      fetch('https://blog-backend-wuzu.onrender.com/api/categories/').then(res => res.json())
     ])
       .then(([postsData, categoriesData]) => {
         setPosts(postsData);
@@ -40,7 +40,7 @@ function HomePage() {
       navigate('/login');
       return;
     }
-    fetch(`http://127.0.0.1:8000/api/posts/${postId}/like/`, {
+    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${postId}/like/`, {
       method: 'POST',
       headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'application/json' }
     })
@@ -77,7 +77,7 @@ function HomePage() {
     setIsSubmittingComment(true);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/comments/', {
+      const response = await fetch('https://blog-backend-wuzu.onrender.com/api/comments/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
         body: JSON.stringify({ post: postId, comment_content: content, parent: null })

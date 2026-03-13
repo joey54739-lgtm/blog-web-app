@@ -19,11 +19,11 @@ function PublicProfilePage() {
 
     Promise.all([
       // 1. Fetch exact user details
-      fetch(`http://127.0.0.1:8000/api/users/search/?q=${encodeURIComponent(username)}`).then(res => res.json()),
+      fetch(`https://blog-backend-wuzu.onrender.com/api/users/search/?q=${encodeURIComponent(username)}`).then(res => res.json()),
       // 2. Fetch all posts (we will filter by exact username below)
-      fetch(`http://127.0.0.1:8000/api/posts/?search=${encodeURIComponent(username)}`).then(res => res.json()),
+      fetch(`https://blog-backend-wuzu.onrender.com/api/posts/?search=${encodeURIComponent(username)}`).then(res => res.json()),
       // 3. Fetch categories for the sidebar
-      fetch('http://127.0.0.1:8000/api/categories/').then(res => res.json())
+      fetch('https://blog-backend-wuzu.onrender.com/api/categories/').then(res => res.json())
     ])
     .then(([usersData, postsData, categoriesData]) => {
       // Find the exact matching user from the search results
@@ -50,7 +50,7 @@ function PublicProfilePage() {
       navigate('/login');
       return;
     }
-    fetch(`http://127.0.0.1:8000/api/posts/${postId}/like/`, {
+    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${postId}/like/`, {
       method: 'POST',
       headers: {
         'Authorization': `Token ${token}`,

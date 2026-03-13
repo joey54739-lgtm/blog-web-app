@@ -31,13 +31,13 @@ function MyPostsPage() {
     }
 
     Promise.all([
-      fetch('http://127.0.0.1:8000/api/posts/mine/', {
+      fetch('https://blog-backend-wuzu.onrender.com/api/posts/mine/', {
         headers: { 'Authorization': `Token ${token}` }
       }).then(res => {
         if (!res.ok) throw new Error('Failed to fetch your posts');
         return res.json();
       }),
-      fetch('http://127.0.0.1:8000/api/categories/').then(res => res.json())
+      fetch('https://blog-backend-wuzu.onrender.com/api/categories/').then(res => res.json())
     ])
       .then(([postsData, categoriesData]) => {
         setPosts(postsData);
@@ -56,7 +56,7 @@ function MyPostsPage() {
   const executeDelete = () => {
     if (!postToDelete) return;
     const token = localStorage.getItem('token');
-    fetch(`http://127.0.0.1:8000/api/posts/${postToDelete}/`, {
+    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${postToDelete}/`, {
       method: 'DELETE',
       headers: { 'Authorization': `Token ${token}` }
     })
@@ -73,7 +73,7 @@ function MyPostsPage() {
 
   const handleLike = (postId) => {
     const token = localStorage.getItem('token');
-    fetch(`http://127.0.0.1:8000/api/posts/${postId}/like/`, {
+    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${postId}/like/`, {
       method: 'POST',
       headers: {
         'Authorization': `Token ${token}`,

@@ -21,9 +21,9 @@ function SearchResultsPage() {
     setIsLoading(true);
     
     Promise.all([
-      fetch(`http://127.0.0.1:8000/api/posts/?search=${encodeURIComponent(query)}`).then(res => res.json()),
-      fetch('http://127.0.0.1:8000/api/categories/').then(res => res.json()),
-      fetch(`http://127.0.0.1:8000/api/users/search/?q=${encodeURIComponent(query)}`).then(res => res.json())
+      fetch(`https://blog-backend-wuzu.onrender.com/api/posts/?search=${encodeURIComponent(query)}`).then(res => res.json()),
+      fetch('https://blog-backend-wuzu.onrender.com/api/categories/').then(res => res.json()),
+      fetch(`https://blog-backend-wuzu.onrender.com/api/users/search/?q=${encodeURIComponent(query)}`).then(res => res.json())
     ])
     .then(([postsData, categoriesData, usersData]) => {
       setPosts(postsData);
@@ -52,7 +52,7 @@ function SearchResultsPage() {
       navigate('/login');
       return;
     }
-    fetch(`http://127.0.0.1:8000/api/posts/${postId}/like/`, {
+    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${postId}/like/`, {
       method: 'POST',
       headers: {
         'Authorization': `Token ${token}`,

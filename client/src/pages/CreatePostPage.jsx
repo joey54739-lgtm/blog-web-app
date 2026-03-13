@@ -9,7 +9,7 @@ function CreatePostPage() {
 
   // Load categories for the dropdown menu
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/categories/')
+    fetch('https://blog-backend-wuzu.onrender.com/api/categories/')
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => console.error("Failed to load categories", err));
@@ -20,7 +20,7 @@ function CreatePostPage() {
     setIsLoading(true);
     const token = localStorage.getItem('token');
 
-    fetch('http://127.0.0.1:8000/api/posts/', {
+    fetch('https://blog-backend-wuzu.onrender.com/api/posts/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ function PostDetailPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/posts/${id}/`)
+    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${id}/`)
       .then(response => {
         if (!response.ok) throw new Error('Post not found');
         return response.json();

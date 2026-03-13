@@ -22,7 +22,7 @@ function LoginPage() {
     setError(null);
 
     // Send the username and password to the Django backend
-    fetch('http://127.0.0.1:8000/api/login/', {
+    fetch('https://blog-backend-wuzu.onrender.com/api/login/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

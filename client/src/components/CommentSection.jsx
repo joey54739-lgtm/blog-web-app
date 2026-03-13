@@ -11,7 +11,7 @@ function CommentSection({ postId }) {
   const currentUser = localStorage.getItem('username'); 
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/comments/?post=${postId}`)
+    fetch(`https://blog-backend-wuzu.onrender.com/api/comments/?post=${postId}`)
       .then(res => res.json())
       .then(data => setComments(data))
       .catch(err => console.error("Failed to fetch comments", err));
@@ -24,7 +24,7 @@ function CommentSection({ postId }) {
     setIsSubmitting(true);
     const token = localStorage.getItem('token');
 
-    fetch('http://127.0.0.1:8000/api/comments/', {
+    fetch('https://blog-backend-wuzu.onrender.com/api/comments/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
       body: JSON.stringify({ post: postId, comment_content: newComment, parent: null }) // explicitly null
@@ -50,7 +50,7 @@ function CommentSection({ postId }) {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/comments/', {
+      const response = await fetch('https://blog-backend-wuzu.onrender.com/api/comments/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
         body: JSON.stringify({ post: postId, comment_content: content, parent: parentId })
@@ -69,7 +69,7 @@ function CommentSection({ postId }) {
     // if (!window.confirm("Delete this comment?")) return;
     
     const token = localStorage.getItem('token');
-    fetch(`http://127.0.0.1:8000/api/comments/${commentId}/`, {
+    fetch(`https://blog-backend-wuzu.onrender.com/api/comments/${commentId}/`, {
       method: 'DELETE',
       headers: { 'Authorization': `Token ${token}` }
     })

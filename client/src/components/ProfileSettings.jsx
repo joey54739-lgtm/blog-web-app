@@ -14,7 +14,7 @@ function ProfileSettings({ username, onProfileUpdate }) {
   useEffect(() => {
     const token = localStorage.getItem('token');
     
-    fetch('http://127.0.0.1:8000/api/profile/me/', {
+    fetch('https://blog-backend-wuzu.onrender.com/api/profile/me/', {
       method: 'GET',
       headers: {
         'Authorization': `Token ${token}`,
@@ -51,7 +51,7 @@ function ProfileSettings({ username, onProfileUpdate }) {
 
     const token = localStorage.getItem('token');
 
-    fetch('http://127.0.0.1:8000/api/profile/update/', {
+    fetch('https://blog-backend-wuzu.onrender.com/api/profile/update/', {
       method: 'PUT',
       headers: {
         'Authorization': `Token ${token}`,
