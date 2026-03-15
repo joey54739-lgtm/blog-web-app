@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CommentItem from './CommentItem';
+import { API_BASE_URL } from '../config';
 
 function CommentSection({ postId }) {
   const [comments, setComments] = useState([]);
@@ -11,7 +12,7 @@ function CommentSection({ postId }) {
   const currentUser = localStorage.getItem('username'); 
 
   useEffect(() => {
-    fetch(`https://blog-backend-wuzu.onrender.com/api/comments/?post=${postId}`)
+    fetch(`${API_BASE_URL}/api/comments/?post=${postId}`)
       .then(res => res.json())
       .then(data => setComments(data))
       .catch(err => console.error("Failed to fetch comments", err));
@@ -24,7 +25,7 @@ function CommentSection({ postId }) {
     setIsSubmitting(true);
     const token = localStorage.getItem('token');
 
-    fetch('https://blog-backend-wuzu.onrender.com/api/comments/', {
+    fetch(API_BASE_URL + '/api/comments/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
       body: JSON.stringify({ post: postId, comment_content: newComment, parent: null }) // explicitly null
@@ -50,7 +51,7 @@ function CommentSection({ postId }) {
     }
 
     try {
-      const response = await fetch('https://blog-backend-wuzu.onrender.com/api/comments/', {
+      const response = await fetch(API_BASE_URL + '/api/comments/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
         body: JSON.stringify({ post: postId, comment_content: content, parent: parentId })
@@ -69,7 +70,7 @@ function CommentSection({ postId }) {
     // if (!window.confirm("Delete this comment?")) return;
     
     const token = localStorage.getItem('token');
-    fetch(`https://blog-backend-wuzu.onrender.com/api/comments/${commentId}/`, {
+    fetch(`${API_BASE_URL}/api/comments/${commentId}/`, {
       method: 'DELETE',
       headers: { 'Authorization': `Token ${token}` }
     })

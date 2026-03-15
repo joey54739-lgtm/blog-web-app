@@ -1,6 +1,7 @@
 import { timeAgo } from '../utils/formatters';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -19,8 +20,8 @@ function HomePage() {
 
   useEffect(() => {
     Promise.all([
-      fetch('https://blog-backend-wuzu.onrender.com/api/posts/').then(res => res.json()),
-      fetch('https://blog-backend-wuzu.onrender.com/api/categories/').then(res => res.json())
+      fetch(API_BASE_URL + '/api/posts/').then(res => res.json()),
+      fetch(API_BASE_URL + '/api/categories/').then(res => res.json())
     ])
       .then(([postsData, categoriesData]) => {
         setPosts(postsData);
@@ -40,7 +41,7 @@ function HomePage() {
       navigate('/login');
       return;
     }
-    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${postId}/like/`, {
+    fetch(`${API_BASE_URL}/api/posts/${postId}/like/`, {
       method: 'POST',
       headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'application/json' }
     })
@@ -77,7 +78,7 @@ function HomePage() {
     setIsSubmittingComment(true);
 
     try {
-      const response = await fetch('https://blog-backend-wuzu.onrender.com/api/comments/', {
+      const response = await fetch(API_BASE_URL + '/api/comments/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${token}` },
         body: JSON.stringify({ post: postId, comment_content: content, parent: null })

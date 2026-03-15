@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import PostItem from '../components/PostItem';
+import { API_BASE_URL } from '../config';
 
 function CategoriesPage() {
   const [categories, setCategories] = useState([]);
@@ -14,8 +15,8 @@ function CategoriesPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch('https://blog-backend-wuzu.onrender.com/api/posts/').then(res => res.json()),
-      fetch('https://blog-backend-wuzu.onrender.com/api/categories/').then(res => res.json())
+      fetch(API_BASE_URL + '/api/posts/').then(res => res.json()),
+      fetch(API_BASE_URL + '/api/categories/').then(res => res.json())
     ])
       .then(([postsData, categoriesData]) => {
         setPosts(postsData);
@@ -48,7 +49,7 @@ function CategoriesPage() {
       navigate('/login');
       return;
     }
-    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${postId}/like/`, {
+    fetch(`${API_BASE_URL}/api/posts/${postId}/like/`, {
       method: 'POST',
       headers: {
         'Authorization': `Token ${token}`,

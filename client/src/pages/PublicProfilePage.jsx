@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import PostItem from '../components/PostItem';
+import { API_BASE_URL } from '../config';
 
 function PublicProfilePage() {
   const { username } = useParams(); // Extract username from URL
@@ -19,11 +20,11 @@ function PublicProfilePage() {
 
     Promise.all([
       // 1. Fetch exact user details
-      fetch(`https://blog-backend-wuzu.onrender.com/api/users/search/?q=${encodeURIComponent(username)}`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/api/users/search/?q=${encodeURIComponent(username)}`).then(res => res.json()),
       // 2. Fetch all posts (we will filter by exact username below)
-      fetch(`https://blog-backend-wuzu.onrender.com/api/posts/?search=${encodeURIComponent(username)}`).then(res => res.json()),
+      fetch(`${API_BASE_URL}/api/posts/?search=${encodeURIComponent(username)}`).then(res => res.json()),
       // 3. Fetch categories for the sidebar
-      fetch('https://blog-backend-wuzu.onrender.com/api/categories/').then(res => res.json())
+      fetch(API_BASE_URL + '/api/categories/').then(res => res.json())
     ])
     .then(([usersData, postsData, categoriesData]) => {
       // Find the exact matching user from the search results
@@ -50,7 +51,7 @@ function PublicProfilePage() {
       navigate('/login');
       return;
     }
-    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${postId}/like/`, {
+    fetch(`${API_BASE_URL}/api/posts/${postId}/like/`, {
       method: 'POST',
       headers: {
         'Authorization': `Token ${token}`,

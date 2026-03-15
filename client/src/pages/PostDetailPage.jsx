@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import CommentSection from '../components/CommentSection';
+import { API_BASE_URL } from '../config';
 
 function PostDetailPage() {
   const { id } = useParams();
@@ -9,7 +10,7 @@ function PostDetailPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${id}/`)
+    fetch(`${API_BASE_URL}/api/posts/${id}/`)
       .then(response => {
         if (!response.ok) throw new Error('Post not found');
         return response.json();

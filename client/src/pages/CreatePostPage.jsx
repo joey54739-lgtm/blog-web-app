@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 function CreatePostPage() {
   const [postData, setPostData] = useState({ title: '', content: '', category: '' });
@@ -9,7 +10,7 @@ function CreatePostPage() {
 
   // Load categories for the dropdown menu
   useEffect(() => {
-    fetch('https://blog-backend-wuzu.onrender.com/api/categories/')
+    fetch(API_BASE_URL + '/api/categories/')
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => console.error("Failed to load categories", err));
@@ -20,7 +21,7 @@ function CreatePostPage() {
     setIsLoading(true);
     const token = localStorage.getItem('token');
 
-    fetch('https://blog-backend-wuzu.onrender.com/api/posts/', {
+    fetch(API_BASE_URL + '/api/posts/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

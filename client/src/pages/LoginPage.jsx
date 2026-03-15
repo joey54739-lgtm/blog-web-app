@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 function LoginPage() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -22,7 +23,7 @@ function LoginPage() {
     setError(null);
 
     // Send the username and password to the Django backend
-    fetch('https://blog-backend-wuzu.onrender.com/api/login/', {
+    fetch(API_BASE_URL + '/api/login/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

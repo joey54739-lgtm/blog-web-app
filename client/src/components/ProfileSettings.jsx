@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config';
 
 function ProfileSettings({ username, onProfileUpdate }) {
   const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ function ProfileSettings({ username, onProfileUpdate }) {
   useEffect(() => {
     const token = localStorage.getItem('token');
     
-    fetch('https://blog-backend-wuzu.onrender.com/api/profile/me/', {
+    fetch(API_BASE_URL + '/api/profile/me/', {
       method: 'GET',
       headers: {
         'Authorization': `Token ${token}`,
@@ -51,7 +52,7 @@ function ProfileSettings({ username, onProfileUpdate }) {
 
     const token = localStorage.getItem('token');
 
-    fetch('https://blog-backend-wuzu.onrender.com/api/profile/update/', {
+    fetch(API_BASE_URL + '/api/profile/update/', {
       method: 'PUT',
       headers: {
         'Authorization': `Token ${token}`,

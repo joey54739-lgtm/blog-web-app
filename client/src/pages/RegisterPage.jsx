@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 function RegisterPage() {
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
@@ -20,7 +21,7 @@ function RegisterPage() {
     setError(null);
 
     // Send the new user data to the Django registration endpoint
-    fetch('https://blog-backend-wuzu.onrender.com/api/register/', {
+    fetch(API_BASE_URL + '/api/register/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

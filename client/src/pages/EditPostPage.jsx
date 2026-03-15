@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 function EditPostPage() {
   const { id } = useParams(); // Get the post ID from the URL
@@ -20,11 +21,11 @@ function EditPostPage() {
 
     // Fetch both the specific post data AND the categories simultaneously
     Promise.all([
-      fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${id}/`).then(res => {
+      fetch(`${API_BASE_URL}/api/posts/${id}/`).then(res => {
         if (!res.ok) throw new Error('Failed to fetch post data');
         return res.json();
       }),
-      fetch('https://blog-backend-wuzu.onrender.com/api/categories/').then(res => res.json())
+      fetch(API_BASE_URL + '/api/categories/').then(res => res.json())
     ])
     .then(([post, categoryData]) => {
       // Pre-fill the form with existing data
@@ -48,7 +49,7 @@ function EditPostPage() {
     const token = localStorage.getItem('token');
 
     // Send a PUT request to update the existing resource
-    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${id}/`, {
+    fetch(`${API_BASE_URL}/api/posts/${id}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

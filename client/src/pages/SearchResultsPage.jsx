@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import PostItem from '../components/PostItem';
+import { API_BASE_URL } from '../config';
 
 function SearchResultsPage() {
   const [searchParams] = useSearchParams();
@@ -21,9 +22,9 @@ function SearchResultsPage() {
     setIsLoading(true);
     
     Promise.all([
-      fetch(`https://blog-backend-wuzu.onrender.com/api/posts/?search=${encodeURIComponent(query)}`).then(res => res.json()),
-      fetch('https://blog-backend-wuzu.onrender.com/api/categories/').then(res => res.json()),
-      fetch(`https://blog-backend-wuzu.onrender.com/api/users/search/?q=${encodeURIComponent(query)}`).then(res => res.json())
+      fetch(`${API_BASE_URL}/api/posts/?search=${encodeURIComponent(query)}`).then(res => res.json()),
+      fetch(API_BASE_URL + '/api/categories/').then(res => res.json()),
+      fetch(`${API_BASE_URL}/api/users/search/?q=${encodeURIComponent(query)}`).then(res => res.json())
     ])
     .then(([postsData, categoriesData, usersData]) => {
       setPosts(postsData);
@@ -52,7 +53,7 @@ function SearchResultsPage() {
       navigate('/login');
       return;
     }
-    fetch(`https://blog-backend-wuzu.onrender.com/api/posts/${postId}/like/`, {
+    fetch(`${API_BASE_URL}/api/posts/${postId}/like/`, {
       method: 'POST',
       headers: {
         'Authorization': `Token ${token}`,
