@@ -131,14 +131,22 @@ function HomePage() {
               <div className="nav-sidebar">
                 <div className="nav-sidebar-title">ALL CATEGORIES</div>
                 <div className="d-flex flex-column mb-1">
+                  
+                  {/* All Posts */}
                   <div 
                     className={`cat-nav-item ${activeFilter === null ? 'active' : ''}`}
                     onClick={() => setActiveFilter(null)}
                     style={{ cursor: 'pointer' }}
+                    // apply Keyboard Accessibility
+                    tabIndex="0"
+                    role="button"
+                    onKeyDown={(e) => { if (e.key === 'Enter') setActiveFilter(null); }}
                   >
                     <span>All Posts</span>
                     <span className="cat-badge">{posts.length}</span>
                   </div>
+                  
+                  {/* categories button */}
                   {categories.map(cat => {
                     const postCount = posts.filter(p => p.category_name === cat.category_name).length;
                     return (
@@ -147,6 +155,10 @@ function HomePage() {
                         className={`cat-nav-item ${activeFilter === cat.category_name ? 'active' : ''}`}
                         onClick={() => setActiveFilter(cat.category_name)}
                         style={{ cursor: 'pointer' }}
+                        // apply Keyboard Accessibility
+                        tabIndex="0"
+                        role="button"
+                        onKeyDown={(e) => { if (e.key === 'Enter') setActiveFilter(cat.category_name); }}
                       >
                         <span>{cat.category_name}</span>
                         <span className="cat-badge">{postCount}</span>
