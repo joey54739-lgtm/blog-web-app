@@ -1,6 +1,2 @@
-// src/config.js
-const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-
-export const API_BASE_URL = isLocalhost 
-  ? 'http://127.0.0.1:8000'
-  : API_BASE_URL + '';
+ // src/config.js
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://blog-backend-wuzu.onrender.com';

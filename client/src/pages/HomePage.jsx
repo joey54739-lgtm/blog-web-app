@@ -210,7 +210,7 @@ function HomePage() {
                     
                     <footer className="post-footer-rich">
                       <div className="interaction-group-rich">
-                        <div className="interaction-item-rich like" onClick={() => handleLike(post.id)}>
+                        <div className="interaction-item-rich like" onClick={() => handleLike(post.id)} role="button" aria-label="Like this post">
                           <i className={post.likes_count > 0 ? "bi bi-heart-fill text-danger" : "bi bi-heart"}></i> {post.likes_count} Likes
                         </div>
                         
