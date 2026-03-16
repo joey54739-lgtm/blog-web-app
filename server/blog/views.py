@@ -1,6 +1,4 @@
-import re
 from django.db.models import Q
-from django.shortcuts import render
 from rest_framework import viewsets, generics, permissions, filters, status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
 from rest_framework.decorators import action, api_view, permission_classes

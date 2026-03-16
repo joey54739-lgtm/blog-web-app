@@ -22,7 +22,6 @@ urlpatterns = [
     # Profile update endpoint
     path('profile/update/', update_profile, name='api_profile_update'),
 
-    path('profile/update/', update_profile, name='api_profile_update'),
     path('profile/me/', get_profile, name='api_profile_me'),
 
     path('users/search/', search_users, name='api_search_users'),

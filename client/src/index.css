@@ -80,35 +80,6 @@ body {
   font-size: 1.1rem;
 }
 
-/* DASHBOARD STYLES (My Posts) */
-.dashboard-item { 
-  transition: all 0.2s ease; 
-  border: 1px solid transparent; 
-  border-bottom: 1px solid #f0f0f0; 
-  padding: 1.5rem; 
-}
-.dashboard-item:last-child { border-bottom: none; }
-.dashboard-item:hover { 
-  background-color: #fafbfc; 
-  transform: translateX(5px); 
-}
-
-/* Status Badge */
-.badge-soft { 
-  background-color: #eef2fa; 
-  color: #3b71ca; 
-  font-weight: 600; 
-}
-
-/* Thumbnail Placeholder */
-.post-thumb-preview { 
-  width: 100px; 
-  height: 70px; 
-  object-fit: cover; 
-  border-radius: 8px; 
-  background-color: #f1f3f5; 
-}
-
 /* Action Buttons (Edit & Delete) */
 .btn-edit { 
   background-color: #fff; 
@@ -318,10 +289,6 @@ body {
 .text-truncate-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 
 /* SEARCH RESULTS PAGE */
-
-/* Highlighted keywords in search results */
-.hl-keyword { background-color: #e0f2fe; color: #0284c7; padding: 0 4px; border-radius: 4px; font-weight: 600; }
-
 /* Search Input Bar */
 .search-utility-bar { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); display: flex; align-items: center; gap: 12px; }
 .search-utility-input { border: none; outline: none; background: transparent; width: 100%; font-size: 1rem; font-weight: 500; color: #0f172a; }

@@ -13,7 +13,6 @@ function PublicProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   
   const [activeCategoryFilter, setActiveCategoryFilter] = useState(null);
-  const [isFollowing, setIsFollowing] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);

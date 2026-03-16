@@ -82,11 +82,6 @@ useEffect(() => {
             <li className="nav-item">
               <Link className="nav-link fw-medium" to="/categories">Categories</Link>
             </li>
-            {/* {isLoggedIn && (
-              <li className="nav-item">
-                <Link className="nav-link fw-medium" to="/my-posts">My Workspace</Link>
-              </li>
-            )} */}
             <li className="nav-item">
               <Link 
                 className="nav-link fw-medium" 

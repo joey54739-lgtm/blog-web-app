@@ -244,13 +244,6 @@ function HomePage() {
                         </div>
                         
                       </div>
-                      {/* <i 
-                        className="bi bi-bookmark bookmark-btn-rich" 
-                        title="Save for later"
-                        role="button"
-                        aria-label="Save for later"
-                        tabIndex="0"
-                      ></i> */}
                     </footer>
 
                     {/* INLINE COMMENT BOX */}
