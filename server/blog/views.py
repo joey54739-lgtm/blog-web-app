@@ -23,10 +23,9 @@ class PostViewSet(viewsets.ModelViewSet):
         search_query = self.request.query_params.get('search', None)
         
         if search_query:
-            word_regex = r'\b' + re.escape(search_query) + r'\b'
             queryset = queryset.filter(
-                Q(post_title__iregex=word_regex) | 
-                Q(post_content__iregex=word_regex) |
+                Q(post_title__icontains=search_query) | 
+                Q(post_content__icontains=search_query) |
                 Q(user__username__icontains=search_query)
             )
         return queryset
@@ -140,10 +139,9 @@ def search_users(request):
     if not query:
         return Response([])
     users_by_name = User.objects.filter(username__icontains=query)
-    word_regex = r'\b' + re.escape(query) + r'\b'
     relevant_posts = Post.objects.filter(
-        Q(post_title__iregex=word_regex) | 
-        Q(post_content__iregex=word_regex)
+        Q(post_title__icontains=query) | 
+        Q(post_content__icontains=query)
     )
     authors_of_posts = User.objects.filter(post__in=relevant_posts)
     final_users = (users_by_name | authors_of_posts).distinct()[:4]
