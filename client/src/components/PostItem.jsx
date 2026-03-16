@@ -15,8 +15,8 @@ function PostItem({ post, onLike }) {
           </span>
         </div>
         
-        <Link to={`/posts/${post.id}`} className="text-decoration-none">
-          <h3 className="post-title fw-bold text-dark h6 mb-1">
+        <Link to={`/posts/${post.id}`} className="d-block text-decoration-none mb-1">
+          <h3 className="post-title fw-bold text-dark h6 mb-0">
             {post.post_title}
           </h3>
         </Link>
@@ -33,13 +33,20 @@ function PostItem({ post, onLike }) {
             >
               {post.author_name ? post.author_name.charAt(0).toUpperCase() : "U"}
             </div>
-            <span className="text-dark fw-medium" style={{ fontSize: '0.8rem' }}>
+            <Link to={`/profile/${post.author_name}`} className="text-dark fw-medium text-decoration-none" style={{ fontSize: '0.8rem' }}>
               {post.author_name}
-            </span>
+            </Link>
           </div>
           
           <div className="compact-stats">
-            <span className="like-btn" onClick={() => onLike(post.id)}>
+            <span 
+              className="like-btn" 
+              onClick={() => onLike(post.id)}
+              role="button"
+              aria-label="Like this post"
+              tabIndex="0"
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onLike(post.id); }}
+            >
               <i className="bi bi-heart-fill"></i> {post.likes_count} Likes
             </span>
             <Link to={`/posts/${post.id}`} className="text-decoration-none text-muted chat-btn">

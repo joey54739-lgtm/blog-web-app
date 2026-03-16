@@ -7,13 +7,15 @@ function SearchResultsPage() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const [localQuery, setLocalQuery] = useState(query);
+  useEffect(() => {
+    setLocalQuery(query);
+  }, [query]);
   
   const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState([]); // Need to fetch categories for the sidebar
+  const [categories, setCategories] = useState([]);
   const [matchedUsers, setMatchedUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  // State for sidebar filtering within search results
   const [activeCategoryFilter, setActiveCategoryFilter] = useState(null);
 
   const navigate = useNavigate();
@@ -69,7 +71,6 @@ function SearchResultsPage() {
     .catch(err => console.error(err));
   };
 
-  // Filter the displayed posts if a sidebar category is clicked
   const displayedPosts = activeCategoryFilter
     ? posts.filter(post => post.category_name === activeCategoryFilter)
     : posts;
@@ -88,17 +89,29 @@ function SearchResultsPage() {
       <div className="container pb-5">
         <div className="row g-4 g-lg-5"> 
           
-          {/* Reconstructed Left Sidebar (Matches CategoriesPage.jsx styling) */}
           <div className="col-lg-3 d-none d-lg-block">
             <div className="nav-sidebar sticky-top" style={{ top: '80px' }}>
               
               <div className="nav-sidebar-title" style={{ marginTop: 0 }}>Content Type</div>
               <div className="d-flex flex-column mb-4">
-                <div className="cat-nav-item active">
+                <div 
+                  className="cat-nav-item"
+                  onClick={() => document.getElementById('articles-section')?.scrollIntoView({ behavior: 'smooth' })}
+                  tabIndex="0"
+                  role="button"
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') document.getElementById('articles-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+                >
                   <span><i className="bi bi-file-text me-2 opacity-50"></i> Articles</span>
                   <span className="cat-badge">{posts.length}</span>
                 </div>
-                <div className="cat-nav-item" style={{ cursor: 'not-allowed', opacity: 0.6 }}>
+                <div 
+                  className={`cat-nav-item ${matchedUsers.length === 0 ? 'opacity-50' : ''}`}
+                  onClick={() => document.getElementById('people-section')?.scrollIntoView({ behavior: 'smooth' })}
+                  tabIndex="0"
+                  role="button"
+                  style={{ pointerEvents: matchedUsers.length === 0 ? 'none' : 'auto' }}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') document.getElementById('people-section')?.scrollIntoView({ behavior: 'smooth' }); }}
+                >
                   <span><i className="bi bi-people me-2 opacity-50"></i> Authors</span>
                   <span className="cat-badge">{matchedUsers.length}</span>
                 </div>
@@ -107,20 +120,19 @@ function SearchResultsPage() {
               <div className="nav-sidebar-title">Categories in Results</div>
               <div className="d-flex flex-column">
                 
-                {/* Reset Filter Button */}
                 <div 
                   className={`cat-nav-item ${activeCategoryFilter === null ? 'active' : ''}`}
                   onClick={() => setActiveCategoryFilter(null)}
+                  tabIndex="0"
+                  role="button"
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveCategoryFilter(null); }}
                 >
                   <span>All Results</span> 
                   <span className="cat-badge">{posts.length}</span>
                 </div>
 
-                {/* Dynamic Category List based on search results */}
                 {categories.map(cat => {
                   const postCount = posts.filter(p => p.category_name === cat.category_name).length;
-                  
-                  // Only show category in sidebar if there are matching posts for it
                   if (postCount === 0) return null; 
                   
                   return (
@@ -128,6 +140,9 @@ function SearchResultsPage() {
                       key={cat.id}
                       className={`cat-nav-item ${activeCategoryFilter === cat.category_name ? 'active' : ''}`}
                       onClick={() => setActiveCategoryFilter(cat.category_name)}
+                      tabIndex="0"
+                      role="button"
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveCategoryFilter(cat.category_name); }}
                     >
                       <span>{cat.category_name}</span> 
                       <span className="cat-badge">{postCount}</span>
@@ -156,7 +171,7 @@ function SearchResultsPage() {
 
             {matchedUsers.length > 0 && (
               <>
-                <div className="d-flex justify-content-between align-items-center mb-3 px-1">
+                <div id="people-section" className="d-flex justify-content-between align-items-center mb-3 px-1 pt-2">
                   <span className="text-dark fw-bold" style={{ fontSize: '1.1rem' }}>People</span>
                 </div>
                 <div className="user-grid">
@@ -175,6 +190,7 @@ function SearchResultsPage() {
                         to={`/profile/${user.username}`} 
                         className="btn btn-light btn-sm rounded-pill px-3 fw-bold text-primary" 
                         style={{ fontSize: '0.75rem' }}
+                        tabIndex="0"
                       >
                         View
                       </Link>
@@ -184,7 +200,7 @@ function SearchResultsPage() {
               </>
             )}
 
-            <div className="d-flex justify-content-between align-items-center mb-3 px-1">
+            <div id="articles-section" className="d-flex justify-content-between align-items-center mb-3 px-1 pt-2">
               <span className="text-dark fw-bold" style={{ fontSize: '1.1rem' }}>Articles ({displayedPosts.length})</span>
               {query && <span className="text-muted small">Showing results for "{query}"</span>}
             </div>

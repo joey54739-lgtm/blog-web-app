@@ -59,41 +59,50 @@ function RegisterPage() {
           </div>
 
           <div className="saas-card p-4 p-md-5">
-            {error && <div className="alert alert-danger text-sm py-2">{error}</div>}
+            {error && <div id="register-error" className="alert alert-danger text-sm py-2" role="alert">{error}</div>}
             
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label fw-medium text-dark text-sm">Username</label>
+                <label htmlFor="reg-username" className="form-label fw-medium text-dark text-sm">Username</label>
                 <input 
+                  id="reg-username"
                   type="text" 
                   className="form-control bg-light border-0 py-2" 
                   name="username"
                   value={formData.username}
                   onChange={handleChange}
                   required 
+                  aria-invalid={error ? "true" : "false"}
+                  aria-describedby={error ? "register-error" : undefined}
                 />
               </div>
 
               <div className="mb-3">
-                <label className="form-label fw-medium text-dark text-sm">Email Address</label>
+                <label htmlFor="reg-email" className="form-label fw-medium text-dark text-sm">Email Address</label>
                 <input 
+                  id="reg-email"
                   type="email" 
                   className="form-control bg-light border-0 py-2" 
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  aria-invalid={error ? "true" : "false"}
+                  aria-describedby={error ? "register-error" : undefined}
                 />
               </div>
               
               <div className="mb-4">
-                <label className="form-label fw-medium text-dark text-sm">Password</label>
+                <label htmlFor="reg-password" className="form-label fw-medium text-dark text-sm">Password</label>
                 <input 
+                  id="reg-password"
                   type="password" 
                   className="form-control bg-light border-0 py-2" 
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   required 
+                  aria-invalid={error ? "true" : "false"}
+                  aria-describedby={error ? "register-error" : undefined}
                 />
               </div>
               

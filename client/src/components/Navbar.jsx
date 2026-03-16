@@ -151,10 +151,6 @@ useEffect(() => {
                       <Link to="/my-posts" state={{ activeView: 'profile' }} className="saas-dropdown-item" onClick={() => setIsDropdownOpen(false)}>
                         <i className="bi bi-person fs-5 opacity-75"></i> My Profile
                       </Link>
-                      <Link to="/my-posts" state={{ activeView: 'security' }} className="saas-dropdown-item" onClick={() => setIsDropdownOpen(false)}>
-                        <i className="bi bi-gear fs-5 opacity-75"></i> Settings
-                      </Link>
-                      
                       <div className="saas-dropdown-divider"></div>
                       
                       <button 

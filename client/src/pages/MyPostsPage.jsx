@@ -11,7 +11,7 @@ function MyPostsPage() {
   const [error, setError] = useState(null);
   const [postToDelete, setPostToDelete] = useState(null);
 
-  // View state engine: 'all', 'profile', 'security', or a specific category_name
+  // View state engine: 'all', 'profile', or a specific category_name
   const location = useLocation();
   const [activeView, setActiveView] = useState(location.state?.activeView || 'all');
 
@@ -91,7 +91,7 @@ function MyPostsPage() {
   };
 
   // Determine what posts to show if a specific category is selected
-  const displayedPosts = (activeView === 'all' || activeView === 'profile' || activeView === 'security')
+  const displayedPosts = (activeView === 'all' || activeView === 'profile')
     ? posts
     : posts.filter(post => post.category_name === activeView);
 
@@ -129,6 +129,9 @@ function MyPostsPage() {
                     className={`cat-nav-item ${activeView === 'all' ? 'active' : ''}`}
                     onClick={() => setActiveView('all')}
                     style={{ cursor: 'pointer' }}
+                    tabIndex="0"
+                    role="button"
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveView('all'); }}
                   >
                     <span><i className="bi bi-collection me-2 opacity-50"></i> All Posts</span>
                     <span className="cat-badge">{posts.length}</span>
@@ -147,6 +150,9 @@ function MyPostsPage() {
                         className={`cat-nav-item ${activeView === cat.category_name ? 'active' : ''}`}
                         onClick={() => setActiveView(cat.category_name)}
                         style={{ cursor: 'pointer' }}
+                        tabIndex="0"
+                        role="button"
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveView(cat.category_name); }}
                       >
                         <span><i className="bi bi-folder2 me-2 text-primary"></i> {cat.category_name}</span>
                         <span className="cat-badge">{postCount}</span>
@@ -161,15 +167,11 @@ function MyPostsPage() {
                     className={`cat-nav-item ${activeView === 'profile' ? 'active' : ''}`}
                     onClick={() => setActiveView('profile')}
                     style={{ cursor: 'pointer' }}
+                    tabIndex="0"
+                    role="button"
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveView('profile'); }}
                   >
                     <span><i className="bi bi-person me-2 opacity-75"></i> Profile Settings</span>
-                  </div>
-                  <div 
-                    className={`cat-nav-item ${activeView === 'security' ? 'active' : ''}`}
-                    onClick={() => setActiveView('security')}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <span><i className="bi bi-shield-lock me-2 opacity-75"></i> Security</span>
                   </div>
                 </div>
 
@@ -182,11 +184,6 @@ function MyPostsPage() {
             {/* View Engine: Switch between Profile Form and Posts List */}
             {activeView === 'profile' ? (
               <ProfileSettings username={username} onProfileUpdate={setUsername} />
-            ) : activeView === 'security' ? (
-              <div className="saas-card p-5 text-center text-muted border-0 shadow-sm mb-4">
-                <i className="bi bi-shield-lock fs-1 d-block mb-3 opacity-50"></i>
-                Security settings coming soon.
-              </div>
             ) : (
               <div className="saas-card px-4 py-2 mb-4 border-0 shadow-sm">
                 {isLoading && <div className="text-center py-5 text-muted">Loading your workspace...</div>}

@@ -1,3 +1,5 @@
+import re
+from django.db.models import Q
 from django.shortcuts import render
 from rest_framework import viewsets, generics, permissions, filters, status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
@@ -16,9 +18,19 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['post_title', 'post_content', 'category__category_name', 'user__username']
-
+    def get_queryset(self):
+        queryset = Post.objects.all().order_by('-created_at')
+        search_query = self.request.query_params.get('search', None)
+        
+        if search_query:
+            word_regex = r'\b' + re.escape(search_query) + r'\b'
+            queryset = queryset.filter(
+                Q(post_title__iregex=word_regex) | 
+                Q(post_content__iregex=word_regex) |
+                Q(user__username__icontains=search_query)
+            )
+        return queryset
+    
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
     
@@ -83,6 +95,9 @@ def update_profile(request):
             
         if 'displayName' in data:
             user.first_name = data['displayName'].strip()
+        
+        if 'email' in data:
+            user.email = data['email'].strip()
             
         user.save()
         
@@ -94,6 +109,7 @@ def update_profile(request):
         return Response({
             "username": user.username,
             "displayName": user.first_name,
+            "email": user.email,
             "bio": profile.bio,
             "detail": "Profile updated successfully!"
         }, status=status.HTTP_200_OK)
@@ -113,6 +129,7 @@ def get_profile(request):
     return Response({
         "username": user.username,
         "displayName": user.first_name,
+        "email": user.email,
         "bio": profile.bio if profile.bio else ""
     }, status=status.HTTP_200_OK)
 
@@ -122,14 +139,21 @@ def search_users(request):
     query = request.query_params.get('q', '')
     if not query:
         return Response([])
-        
-    users = User.objects.filter(username__icontains=query)[:4]
+    users_by_name = User.objects.filter(username__icontains=query)
+    word_regex = r'\b' + re.escape(query) + r'\b'
+    relevant_posts = Post.objects.filter(
+        Q(post_title__iregex=word_regex) | 
+        Q(post_content__iregex=word_regex)
+    )
+    authors_of_posts = User.objects.filter(post__in=relevant_posts)
+    final_users = (users_by_name | authors_of_posts).distinct()[:4]
     
     user_data = []
-    for u in users:
+    for u in final_users:
         bio = u.profile.bio if hasattr(u, 'profile') and u.profile.bio else "This author hasn't written a bio yet."
         user_data.append({
             "username": u.username,
+            "displayName": u.first_name,
             "bio": bio
         })
         

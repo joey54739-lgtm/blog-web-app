@@ -193,7 +193,7 @@ function HomePage() {
                             {post.author_name}
                           </Link>
                           <i className="bi bi-patch-check-fill text-primary ms-1" style={{ fontSize: '0.85rem' }} title="Verified"></i> 
-                          <button className="btn-follow-pill">Follow</button>
+                          {/* <button className="btn-follow-pill">Follow</button> */}
                         </div>
                         <div className="author-meta">
                           {post.author_bio || "Tech Enthusiast"} <span className="opacity-50 mx-1">·</span> {timeAgo(post.created_at)}
@@ -222,19 +222,35 @@ function HomePage() {
                     
                     <footer className="post-footer-rich">
                       <div className="interaction-group-rich">
-                        <div className="interaction-item-rich like" onClick={() => handleLike(post.id)} role="button" aria-label="Like this post">
+                        <div 
+                          className="interaction-item-rich like" 
+                          onClick={() => handleLike(post.id)} 
+                          role="button" 
+                          aria-label="Like this post"
+                          tabIndex="0"
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleLike(post.id); }}
+                        >
                           <i className={post.likes_count > 0 ? "bi bi-heart-fill text-danger" : "bi bi-heart"}></i> {post.likes_count} Likes
                         </div>
-                        
-                        {/* INLINE COMMENT TOGGLE */}
                         <div 
                           className={`interaction-item-rich comment ${activeCommentBox === post.id ? 'active-comment' : ''}`} 
                           onClick={() => toggleCommentBox(post.id)}
+                          role="button"
+                          aria-label="Toggle comments"
+                          tabIndex="0"
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleCommentBox(post.id); }}
                         >
                           <i className="bi bi-chat"></i> {post.comments_count} Comments
                         </div>
+                        
                       </div>
-                      <i className="bi bi-bookmark bookmark-btn-rich" title="Save for later"></i>
+                      {/* <i 
+                        className="bi bi-bookmark bookmark-btn-rich" 
+                        title="Save for later"
+                        role="button"
+                        aria-label="Save for later"
+                        tabIndex="0"
+                      ></i> */}
                     </footer>
 
                     {/* INLINE COMMENT BOX */}

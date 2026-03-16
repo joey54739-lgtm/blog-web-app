@@ -115,6 +115,9 @@ function CategoriesPage() {
                 <div 
                   className={`cat-nav-item ${activeCategory === null ? 'active' : ''}`}
                   onClick={() => setActiveCategory(null)}
+                  tabIndex="0"
+                  role="button"
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveCategory(null); }}
                 >
                   <span>All Posts</span> 
                   <span className="cat-badge">{posts.length}</span>
@@ -127,6 +130,9 @@ function CategoriesPage() {
                       key={cat.id}
                       className={`cat-nav-item ${activeCategory?.id === cat.id ? 'active' : ''}`}
                       onClick={() => setActiveCategory(cat)}
+                      tabIndex="0"
+                      role="button"
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveCategory(cat); }}
                     >
                       <span>{cat.category_name}</span> 
                       <span className="cat-badge">{postCount}</span>

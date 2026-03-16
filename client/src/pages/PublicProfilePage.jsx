@@ -95,32 +95,23 @@ function PublicProfilePage() {
           <div className="author-avatar-hero">
             {profileUser.username.charAt(0).toUpperCase()}
           </div>
-          
           <div className="flex-grow-1">
-            <div className="d-flex align-items-center gap-3 mb-1">
-              <h1 className="profile-hero-name d-flex align-items-center">
+            <div className="d-flex align-items-center gap-2 mb-0">
+              <h1 className="profile-hero-name d-flex align-items-center" style={{ fontSize: '1.2rem' }}>
                 {profileUser.username} 
-                <i className="bi bi-patch-check-fill text-primary ms-2" style={{ fontSize: '1rem' }} title="Verified Creator"></i>
+                <i className="bi bi-patch-check-fill text-primary ms-2" style={{ fontSize: '0.9rem' }} title="Verified Creator"></i>
               </h1>
-              <button 
-                className={`btn ${isFollowing ? 'btn-light border text-dark' : 'btn-primary'} rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center`} 
-                style={{ fontSize: '0.8rem', padding: '4px 16px', transition: 'all 0.2s' }}
-                onClick={() => setIsFollowing(!isFollowing)}
-              >
-                {isFollowing ? 'Following' : 'Follow'}
-              </button>
             </div>
 
-            <div className="profile-hero-handle">
-              @{profileUser.username.toLowerCase()}
+            <div className="profile-hero-handle text-muted" style={{ fontSize: '0.8rem', marginBottom: '4px' }}>
+              @{profileUser.displayName ? profileUser.displayName : profileUser.username.toLowerCase()}
             </div>
             
-            <p className="profile-hero-bio">
+            <p className="profile-hero-bio mb-1">
               {profileUser.bio || "This author hasn't written a bio yet, but their posts speak for themselves."}
             </p>
 
             <div className="profile-stats-container">
-              <span className="profile-stat-item"><span className="profile-stat-number">1,248</span> Followers</span>
               <span className="profile-stat-item"><span className="profile-stat-number">{userPosts.length}</span> Published Posts</span>
             </div>
           </div>

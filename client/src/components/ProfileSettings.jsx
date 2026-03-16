@@ -5,6 +5,7 @@ function ProfileSettings({ username, onProfileUpdate }) {
   const [formData, setFormData] = useState({
     username: username || '',
     displayName: username || '',
+    email: '',
     bio: ''
   });
   
@@ -27,6 +28,7 @@ function ProfileSettings({ username, onProfileUpdate }) {
       setFormData({
         username: data.username || username || '',
         displayName: data.displayName || username || '',
+        email: data.email || '',
         bio: data.bio || ''
       });
       setIsLoading(false);
@@ -99,13 +101,19 @@ function ProfileSettings({ username, onProfileUpdate }) {
     <div className="saas-card p-4 border-0 shadow-sm mb-4">
       <h5 className="settings-header border-bottom pb-2 mb-3">Public Profile</h5>
 
-      <div className="avatar-upload-box pb-3 border-bottom mb-3">
-        <div className="avatar-md">
+      <div className="d-flex align-items-center gap-3 pb-3 border-bottom mb-3">
+        <div className="author-avatar-hero" style={{ width: '45px', height: '45px', fontSize: '1.4rem' }}>
           {formData.username ? formData.username.charAt(0).toUpperCase() : 'U'}
         </div>
         <div>
-          <button type="button" className="btn-outline-upload">Upload New</button>
-          <div className="upload-hint">Max 2MB (JPEG or PNG).</div>
+          <h6 className="mb-0 fw-bold">{formData.username}</h6>
+          <p className="text-muted mb-0 small">
+            <span className="text-primary opacity-75">
+              {formData.displayName ? `@${formData.displayName}` : `@${formData.username.toLowerCase()}`}
+            </span>
+            <span className="mx-2 opacity-50">|</span> 
+            {formData.email ? formData.email : "No email linked"}
+          </p>
         </div>
       </div>
 
@@ -113,16 +121,13 @@ function ProfileSettings({ username, onProfileUpdate }) {
         <div className="row g-3 mb-3">
           <div className="col-md-6">
             <label className="saas-form-label">Username</label>
-            <div className="input-group">
-              <span className="input-group-text-pro">blog.com/@</span>
-              <input 
-                type="text" 
-                className="saas-form-control form-control-pro" 
-                name="username"
-                value={formData.username} 
-                onChange={handleChange}
-              />
-            </div>
+            <input 
+              type="text" 
+              className="saas-form-control" 
+              name="username"
+              value={formData.username} 
+              onChange={handleChange}
+            />
           </div>
           <div className="col-md-6">
             <label className="saas-form-label">Display Name</label>
@@ -137,6 +142,24 @@ function ProfileSettings({ username, onProfileUpdate }) {
         </div>
 
         <div className="mb-3">
+          <label className="saas-form-label">Email Address</label>
+          <div className="input-group d-flex"> 
+            <span className="input-group-text bg-light border-end-0" style={{ borderRadius: '20px 0 0 20px' }}>
+              <i className="bi bi-envelope text-muted"></i>
+            </span>
+            <input 
+              type="email" 
+              className="form-control border-start-0 ps-0" 
+              style={{ borderRadius: '0 20px 20px 0', fontSize: '0.9rem', height: '42px' }}
+              name="email"
+              placeholder="No email provided"
+              value={formData.email} 
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        <div className="mb-3">
           <label className="saas-form-label">Bio</label>
           <textarea 
             className="saas-form-control" 
@@ -145,8 +168,9 @@ function ProfileSettings({ username, onProfileUpdate }) {
             value={formData.bio}
             onChange={handleChange}
             placeholder="Brief description for your profile..."
+            style={{ borderRadius: '12px' }}
           ></textarea>
-          <div className="saas-form-text">Markdown is supported. Max 160 chars.</div>
+          <div className="saas-form-text">Max 160 chars.</div>
         </div>
 
         <div className="d-flex justify-content-end align-items-center pt-2 mt-3 border-top gap-3">

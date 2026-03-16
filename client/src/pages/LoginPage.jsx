@@ -63,30 +63,39 @@ function LoginPage() {
           </div>
 
           <div className="saas-card p-4 p-md-5">
-            {error && <div className="alert alert-danger text-sm py-2">{error}</div>}
+            {/* 1. 给错误提示框加上 id="login-error" */}
+            {error && <div id="login-error" className="alert alert-danger text-sm py-2" role="alert">{error}</div>}
             
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label fw-medium text-dark text-sm">Username</label>
+                {/* 2. label 必须通过 htmlFor 和 input 的 id 绑定 */}
+                <label htmlFor="username-input" className="form-label fw-medium text-dark text-sm">Username</label>
                 <input 
+                  id="username-input"
                   type="text" 
                   className="form-control bg-light border-0 py-2" 
                   name="username"
                   value={credentials.username}
                   onChange={handleChange}
                   required 
+                  /* 3. 核心！程序级关联！如果有 error，就标记为无效，并指向 error 的 ID */
+                  aria-invalid={error ? "true" : "false"}
+                  aria-describedby={error ? "login-error" : undefined}
                 />
               </div>
               
               <div className="mb-4">
-                <label className="form-label fw-medium text-dark text-sm">Password</label>
+                <label htmlFor="password-input" className="form-label fw-medium text-dark text-sm">Password</label>
                 <input 
+                  id="password-input"
                   type="password" 
                   className="form-control bg-light border-0 py-2" 
                   name="password"
                   value={credentials.password}
                   onChange={handleChange}
                   required 
+                  aria-invalid={error ? "true" : "false"}
+                  aria-describedby={error ? "login-error" : undefined}
                 />
               </div>
               
