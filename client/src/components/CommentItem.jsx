@@ -53,8 +53,6 @@ function CommentItem({ comment, allComments, onSubmitReply, onDelete, currentUse
         <div className="comment-text">{comment.comment_content}</div>
         
         <div className="comment-actions">
-          <div className="action-btn"><i className="bi bi-heart"></i> Like</div>
-          
           {/* TOGGLE REPLY BOX */}
           <div 
             className={`action-btn ${isReplying ? 'active-reply' : ''}`}

@@ -51,6 +51,23 @@ class PostViewSet(viewsets.ModelViewSet):
             'likes_count': post.likes.count(),
             'liked': liked
         })
+    def update(self, request, *args, **kwargs):
+        post = self.get_object()
+        if post.user != request.user:
+            return Response(
+                {"detail": "You do not have permission to edit this post."}, 
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        post = self.get_object()
+        if post.user != request.user:
+            return Response(
+                {"detail": "You do not have permission to delete this post."}, 
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().destroy(request, *args, **kwargs)
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
