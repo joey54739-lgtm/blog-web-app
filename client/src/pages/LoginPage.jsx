@@ -63,12 +63,12 @@ function LoginPage() {
           </div>
 
           <div className="saas-card p-4 p-md-5">
-            {/* 1. 给错误提示框加上 id="login-error" */}
+            {/* Added id="login-error" for ARIA referencing */}
             {error && <div id="login-error" className="alert alert-danger text-sm py-2" role="alert">{error}</div>}
             
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                {/* 2. label 必须通过 htmlFor 和 input 的 id 绑定 */}
+                {/* Bound label to input via htmlFor */}
                 <label htmlFor="username-input" className="form-label fw-medium text-dark text-sm">Username</label>
                 <input 
                   id="username-input"
@@ -78,7 +78,7 @@ function LoginPage() {
                   value={credentials.username}
                   onChange={handleChange}
                   required 
-                  /* 3. 核心！程序级关联！如果有 error，就标记为无效，并指向 error 的 ID */
+                  /* Core Accessibility: Link input to error message programmatically */
                   aria-invalid={error ? "true" : "false"}
                   aria-describedby={error ? "login-error" : undefined}
                 />
