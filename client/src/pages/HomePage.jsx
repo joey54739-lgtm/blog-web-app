@@ -37,7 +37,6 @@ function HomePage() {
   const handleLike = (postId) => {
     const token = localStorage.getItem('token');
     if (!token) {
-      alert("Please log in to like this post.");
       navigate('/login');
       return;
     }
@@ -67,7 +66,6 @@ function HomePage() {
   const handlePostComment = async (postId) => {
     const token = localStorage.getItem('token');
     if (!token) {
-      alert("Please log in to comment.");
       navigate('/login');
       return;
     }

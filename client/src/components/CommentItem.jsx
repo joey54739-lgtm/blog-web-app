@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const timeAgo = (dateString) => {
   const now = new Date();
@@ -13,6 +14,7 @@ const timeAgo = (dateString) => {
 
 function CommentItem({ comment, allComments, onSubmitReply, onDelete, currentUser }) {
   const [showReplies, setShowReplies] = useState(false);
+  const navigate = useNavigate();
   
   // NEW STATES FOR INLINE REPLY
   const [isReplying, setIsReplying] = useState(false);
@@ -57,6 +59,11 @@ function CommentItem({ comment, allComments, onSubmitReply, onDelete, currentUse
           <div 
             className={`action-btn ${isReplying ? 'active-reply' : ''}`}
             onClick={() => {
+              const token = localStorage.getItem('token');
+              if (!token) {
+                navigate('/login');
+                return;
+              }
               setIsReplying(!isReplying);
               if (!isReplying) setReplyText('');
             }}

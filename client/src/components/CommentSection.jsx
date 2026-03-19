@@ -46,7 +46,6 @@ function CommentSection({ postId }) {
   const handleInlineReply = async (parentId, content) => {
     const token = localStorage.getItem('token');
     if (!token) {
-      alert("Please log in to reply.");
       return;
     }
 

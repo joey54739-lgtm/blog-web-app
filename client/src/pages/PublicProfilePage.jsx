@@ -46,7 +46,6 @@ function PublicProfilePage() {
   const handleLike = (postId) => {
     const token = localStorage.getItem('token');
     if (!token) {
-      alert("Please log in to like this post.");
       navigate('/login');
       return;
     }
